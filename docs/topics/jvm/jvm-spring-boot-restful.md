@@ -24,9 +24,9 @@ Use Spring Initializr to create a new project:
 
 > You can also create a new project using [IntelliJ IDEA with the Spring Boot plugin](https://www.jetbrains.com/help/idea/spring-boot.html)
 >
-{type="note"}
+{style="note"}
 
-1. Open [Spring Initializr](https://start.spring.io/#!type=gradle-project&language=kotlin&platformVersion=2.6.0&packaging=jar&jvmVersion=11&groupId=com.example&artifactId=demo&name=demo&description=Demo%20project%20for%20Spring%20Boot&packageName=demo&dependencies=web,data-jdbc,h2). This link opens the page with the project settings for this tutorial already filled in.
+1. Open [Spring Initializr](https://start.spring.io/#!type=gradle-project&language=kotlin&platformVersion=2.7.3&packaging=jar&jvmVersion=11&groupId=com.example&artifactId=demo&name=demo&description=Demo%20project%20for%20Spring%20Boot&packageName=demo&dependencies=web,data-jdbc,h2). This link opens the page with the project settings for this tutorial already filled in.
 This project uses **Gradle**, **Kotlin**, **Spring Web**, **Spring Data JDBC**, and **H2 Database**:
 
    ![Create a new project with Spring Initializr](spring-boot-create-project-with-initializr.png){width=800}
@@ -91,7 +91,7 @@ containing a collection of `Message` objects:
    ```kotlin
    @RestController
    class MessageResource {
-       @GetMapping
+       @GetMapping("/")
        fun index(): List<Message> = listOf(
            Message("1", "Hello!"),
            Message("2", "Bonjour!"),
@@ -120,7 +120,7 @@ fun main(args: Array<String>) {
 
 @RestController
 class MessageResource {
-    @GetMapping
+    @GetMapping("/")
     fun index(): List<Message> = listOf(
         Message("1", "Hello!"),
         Message("2", "Bonjour!"),
@@ -142,7 +142,7 @@ the launch menu in IntelliJ IDEA:
 
    > You can also run the `./gradlew bootRun` command in the terminal.
    >
-   {type="note"}
+   {style="note"}
 
 2. Once the application starts, open the following URL: [http://localhost:8080](http://localhost:8080).
 
@@ -161,7 +161,7 @@ before the `id` field. These annotations also require additional imports:
    import org.springframework.data.annotation.Id
    import org.springframework.data.relational.core.mapping.Table
   
-   @Table("messages")
+   @Table("MESSAGES")
    data class Message(@Id val id: String?, val text: String)
    ```
 
@@ -216,10 +216,10 @@ database query:
   
    @RestController
    class MessageResource(val service: MessageService) {
-       @GetMapping
+       @GetMapping("/")
        fun index(): List<Message> = service.findMessages()
   
-       @PostMapping
+       @PostMapping("/")
        fun post(@RequestBody message: Message) {
            service.post(message)
        }
@@ -252,13 +252,13 @@ the `Message` class.
 3. Open the `application.properties` file located in the `src/main/resources` folder and add the following application
 properties:
 
-   ```properties
+   ```none
    spring.datasource.driver-class-name=org.h2.Driver
    spring.datasource.url=jdbc:h2:file:./data/testdb
    spring.datasource.username=sa
    spring.datasource.password=password
-   spring.datasource.schema=classpath:sql/schema.sql
-   spring.datasource.initialization-mode=always
+   spring.sql.init.schema-locations=classpath:sql/schema.sql
+   spring.sql.init.mode=always
    ```
 
    These settings enable the database for the Spring Boot application.
@@ -329,7 +329,20 @@ curl -X POST --location "http://localhost:8080" -H "Content-Type: application/js
 curl -X GET --location "http://localhost:8080"
 ```
 
-## What's next?
+## Next step
+
+Get your personal language map to help you navigate Kotlin features and track your progress in studying the language.
+We will also send you language tips and useful materials on using Kotlin with Spring.
+
+<a href="https://info.jetbrains.com/kotlin-tips.html">
+   <img src="get-kotlin-language-map.png" width="700" alt="Get the Kotlin language map"/>
+</a>
+
+> You will need to share your email address on the next page to receive the materials.
+>
+{style="note"}
+
+### See also
 
 For more tutorials, check out the Spring website:
 

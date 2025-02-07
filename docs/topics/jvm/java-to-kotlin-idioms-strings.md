@@ -31,7 +31,7 @@ fun main() {
 {kotlin-runnable="true" id="concatenate-strings-kotlin"}
 
 You can interpolate the value of a complicated expression by surrounding it with curly braces, like in `${name.length}`.
-See [string templates](basic-types.md#string-templates) for more information.
+See [string templates](strings.md#string-templates) for more information.
 
 ## Build a string
 
@@ -85,7 +85,7 @@ String invertedOddNumbers = numbers
         .filter(it -> it % 2 != 0)
         .map(it -> -it)
         .map(Object::toString)
-        .collect(Collectors.joining(", "));
+        .collect(Collectors.joining("; "));
 System.out.println(invertedOddNumbers);
 ```
 {id="create-string-from-collection-java"}
@@ -100,12 +100,16 @@ fun main() {
     val numbers = listOf(1, 2, 3, 4, 5, 6)
     val invertedOddNumbers = numbers
         .filter { it % 2 != 0 }
-        .joinToString{ "${-it}" }
+        .joinToString(separator = ";") {"${-it}"}
     println(invertedOddNumbers)
 //sampleEnd
 }
 ```
 {kotlin-runnable="true"  id="create-string-from-collection-kotlin"}
+
+> In Java, if you want spaces between your delimiters and following items, you need to add a space to the delimiter explicitly.
+>
+{style="note"}
 
 Learn more about [joinToString()](collection-transformations.md#string-representation) usage.
 
@@ -149,16 +153,14 @@ fun getName(): String =
 
 ## Replace characters at the beginning and end of a string
 
-In Java, you can use 
-the [replaceFirst()](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#replaceFirst(java.lang.String,java.lang.String)) 
-and the [replaceAll()](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#replaceAll(java.lang.String,java.lang.String)) 
-functions.
-The `replaceAll()` function in this case accepts the regular expression `##$`, which defines a string ending with `##`:
+In Java, you can use the [replaceAll()](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#replaceAll(java.lang.String,java.lang.String)) 
+function.
+The `replaceAll()` function in this case accepts regular expressions `^##` and `##$`, which define strings starting and ending with `##` respectively:
 
 ```java
 // Java
 String input = "##place##holder##";
-String result = input.replaceFirst("##", "").replaceAll("##$", "");
+String result = input.replaceAll("^##|##$", "");
 System.out.println(result);
 ```
 {id="replace-characters-java"}
@@ -197,14 +199,14 @@ System.out.println("Anonymized input: '" + replacementResult + "'");
 
 In Kotlin, you use the [Regex](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.text/-regex/) class
 that simplifies working with regular expressions.
-Additionally, use [raw strings](basic-types.md#string-literals) to simplify a regex pattern
+Additionally, use [multiline strings](strings.md#multiline-strings) to simplify a regex pattern
 by reducing the count of backslashes:
 
 ```kotlin
 fun main() {
 //sampleStart
     // Kotlin
-    val regex = Regex("""\w*\d+\w*""") // raw string
+    val regex = Regex("""\w*\d+\w*""") // multiline string
     val input = "login: Pokemon5, password: 1q2w3e4r5t"
     val replacementResult = regex.replace(input, replacement = "xxx")
     println("Initial input: '$input'")
@@ -256,7 +258,7 @@ System.out.println(answer);
 {id="take-substring-java"}
 
 In Kotlin, you use the [substringAfter()](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.text/substring-after.html) function 
-and don’t need to calculate the index of the character you want to take a substring after:
+and don't need to calculate the index of the character you want to take a substring after:
 
 ```kotlin
 fun main() {
@@ -308,19 +310,21 @@ there will be an extra empty line:
 // Java
 String result = """
     Kotlin
-    Java
-    """.stripIndent();
+       Java
+    """;
 System.out.println(result);
 ```
 {id="join-strings-15-java"}
 
 The output:
+
 ![Java 15 multiline output](java-15-multiline-output.png){width=700}
 
 If you put the triple-quote on the same line as the last word, this difference in behavior disappears.
 
-In Kotlin, you can format your line with the quotes on the new line, and there will be no extra empty line in the output.
-The left-most character of any line identifies the beginning of the line.
+In Kotlin, you can format your line with the quotes on the new line, and there will be no extra empty line in the output. 
+The left-most character of any line identifies the beginning of the line. The difference with Java is that Java automatically 
+trims indents, and in Kotlin you should do it explicitly:
 
 ```kotlin
 fun main() {
@@ -328,7 +332,7 @@ fun main() {
     // Kotlin   
     val result = """
         Kotlin
-        Java 
+           Java 
     """.trimIndent()
     println(result)
 //sampleEnd
@@ -337,7 +341,10 @@ fun main() {
 {kotlin-runnable="true" id="join-strings-kotlin"}
 
 The output:
+
 ![Kotlin multiline output](kotlin-multiline-output.png){width=700}
+
+To have  an extra empty line, you should add this empty line to your multiline string explicitly.
 
 In Kotlin, you can also use the [trimMargin()](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.text/trim-margin.html) function to customize the indents:
 
@@ -355,7 +362,7 @@ fun main() {
 
 Learn more about [multiline strings](coding-conventions.md#strings).
 
-## What’s next?
+## What's next?
 
 * Look through other [Kotlin idioms](idioms.md).
 * Learn how to convert existing Java code to Kotlin with

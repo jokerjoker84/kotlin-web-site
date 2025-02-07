@@ -1,33 +1,31 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 
 import Head from 'next/head';
 
 import GlobalHeader, { COMMUNITY_TITLE, COMMUNITY_URL } from '@jetbrains/kotlin-web-site-ui/out/components/header';
 import GlobalFooter from '@jetbrains/kotlin-web-site-ui/out/components/footer';
 import TopMenu from '@jetbrains/kotlin-web-site-ui/out/components/top-menu';
-import CtaBlock from '@jetbrains/kotlin-web-site-ui/out/components/cta-block';
+import { CtaBlock } from '@jetbrains/kotlin-web-site-ui/out/components/cta-block-v2';
 import Button from '@rescui/button';
-import { Theme, ThemeProvider } from '@rescui/ui-contexts';
+import { ThemeProvider } from '@rescui/ui-contexts';
 import { useRouter } from 'next/router';
 import { StickyHeader } from '../../../components/sticky-header/sticky-header';
-import { Search, onSearch } from '../../../components/search/search';
+import styles from './community-layout.module.css';
 import releasesDataRaw from '../../../data/releases.yml';
+import searchConfig from '../../../search-config.json';
+import { CommunityAddEvent } from '../event-list/event-list';
 
 const releasesData: ReleasesData = releasesDataRaw as ReleasesData;
 
-const items = [
+const TOP_MENU_ITEMS = [
     {
         url: '/community/',
-        title: 'Overview',
+        title: 'Overview'
     },
     {
         url: '/community/user-groups/',
-        title: 'Kotlin User Groups',
-    },
-    {
-        url: '/community/events/',
-        title: 'Events',
-    },
+        title: 'Kotlin User Groups'
+    }
 ];
 
 interface CommunityLayoutProps {
@@ -40,10 +38,15 @@ interface CommunityLayoutProps {
 export const CommunityLayout: FC<CommunityLayoutProps> = ({ title, ogImageName, description, children }) => {
     const theme = 'dark';
     const router = useRouter();
-    const activeIndex = useMemo(
-        () => items.map((item) => item.url).indexOf(addTrailingSlash(router.pathname)),
-        [router.pathname]
+    const pathname = addTrailingSlash(router.pathname);
+
+    let items = TOP_MENU_ITEMS;
+
+    let activeIndex = useMemo(
+        () => items.map((item) => item.url).indexOf(pathname),
+        [pathname, items]
     );
+
     const linkHandler = useCallback(
         (event, url) => {
             event.preventDefault();
@@ -61,6 +64,14 @@ export const CommunityLayout: FC<CommunityLayoutProps> = ({ title, ogImageName, 
         () => (ogImageName ? ogImagePath : 'https://kotlinlang.org/assets/images/twitter/general.png'),
         [ogImageName, ogImagePath]
     );
+
+    if (activeIndex === -1) {
+        activeIndex = items.length;
+        items = [...items, {
+            url: router.pathname + '/',
+            title,
+        }];
+    }
 
     return (
         <>
@@ -88,18 +99,29 @@ export const CommunityLayout: FC<CommunityLayoutProps> = ({ title, ogImageName, 
                 currentTitle={COMMUNITY_TITLE}
                 productWebUrl={releasesData.latest.url}
                 hasSearch={true}
-                onSearchClick={onSearch}
+                searchConfig={searchConfig}
             />
 
             <StickyHeader>
-                <TopMenu
-                    homeUrl={COMMUNITY_URL}
-                    title={COMMUNITY_TITLE}
-                    activeIndex={activeIndex}
-                    items={items}
-                    linkHandler={linkHandler}
-                    mobileOverview={false}
-                />
+                <div className={styles.sticky}>
+                    <TopMenu
+                        className={styles.topMenu}
+                        homeUrl={COMMUNITY_URL}
+                        title={COMMUNITY_TITLE}
+                        activeIndex={activeIndex}
+                        items={items}
+                        linkHandler={linkHandler}
+                        mobileOverview={false}
+                    >
+                        {pathname === '/community/events/' && (
+                            <CommunityAddEvent
+                                className={styles.add}
+                                size="s"
+                                href="https://github.com/JetBrains/kotlin-web-site/blob/master/README.md#community-events"
+                            />
+                        )}
+                    </TopMenu>
+                </div>
             </StickyHeader>
 
             {children}
@@ -111,19 +133,19 @@ export const CommunityLayout: FC<CommunityLayoutProps> = ({ title, ogImageName, 
                         Write to us
                     </Button>
                 }
-            >
-                <div className={'ktl-hero ktl-hero_theme_dark'}>
-                    Give us your feedback or ask any questions
-                    <br />
-                    you have about the Kotlin community
-                </div>
-            </CtaBlock>
+                mainTitle={
+                    <>
+                        Give us your feedback or ask any questions
+                        <br />
+                        you have about the Kotlin community
+                    </>
+                }
+            />
+
 
             <ThemeProvider theme={theme}>
                 <GlobalFooter />
             </ThemeProvider>
-
-            <Search />
         </>
     );
 };

@@ -23,6 +23,7 @@
     {% set headerDropdownTheme = "light" %}
 {% endif %}
 
+{% block top_banner %}{% endblock %}
 <div class="global-layout">
     {% ktl_component "header" productWebUrl=data.releases.latest.url hasSearch=True dropdownTheme=headerDropdownTheme currentUrl=headerCurrentUrl %}
     {% block page_outer_content %}
@@ -37,8 +38,6 @@
     {% block page_after_content %}{% endblock %}
     {% ktl_component "footer" %}
 </div>
-
-{% include 'inc/search-popup.html' %}
 
 <script>document.body.className = document.body.className.replace('page_js_no', 'page_js_yes')</script>
 <script src="{{ url_for('static', filename='shared.js')|autoversion }}"></script>

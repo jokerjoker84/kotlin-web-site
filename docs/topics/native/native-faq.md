@@ -4,18 +4,18 @@
 
 Define a top-level function `fun main(args: Array<String>)` or just  `fun main()` if you are not interested
 in passed arguments, please ensure it's not in a package.
-Also compiler switch `-entry` could be used to make any function taking `Array<String>` or no arguments
+Also, compiler switch `-entry` could be used to make any function taking `Array<String>` or no arguments
 and return `Unit` as an entry point.
 
 ## What is Kotlin/Native memory management model?
 
-Kotlin/Native provides an automated memory management scheme, similar to what Java or Swift provides.
-The current implementation includes an automated reference counter with a cycle collector to collect cyclical
-garbage.
+Kotlin/Native uses an automated memory management scheme that is similar to what Java or Swift provide.
+
+[Learn about the Kotlin/Native memory manager](native-memory-manager.md)
 
 ## How do I create a shared library?
 
-Use the `-produce dynamic` compiler switch, or `binaries.sharedLib()` in Gradle.
+Use the `-produce dynamic` compiler option or `binaries.sharedLib()` in your Gradle build file:
 
 ```kotlin
 kotlin {
@@ -25,14 +25,14 @@ kotlin {
 }
 ```
 
-It will produce a platform-specific shared object (`.so` on Linux, `.dylib` on macOS, and `.dll` on Windows targets) and a
+It produces a platform-specific shared object (`.so` on Linux, `.dylib` on macOS, and `.dll` on Windows targets) and a
 C language header, allowing the use of all public APIs available in your Kotlin/Native program from C/C++ code.
-See [this example](https://github.com/JetBrains/kotlin/tree/master/kotlin-native/samples/python_extension) of using such a
-shared object to provide a bridge between Python and Kotlin/Native.
+
+[Complete the Kotlin/Native as a dynamic library tutorial](native-dynamic-libraries.md)
 
 ## How do I create a static library or an object file?
 
-Use the `-produce static` compiler switch, or `binaries.staticLib()` in Gradle.
+Use the `-produce static` compiler option or `binaries.staticLib()` in your Gradle build file:
 
 ```kotlin
 kotlin {
@@ -42,7 +42,7 @@ kotlin {
 }
 ```
 
-It will produce a platform-specific static object (`.a` library format) and a C language header, allowing you to
+It produces a platform-specific static object (`.a` library format) and a C language header, allowing you to
 use all the public APIs available in your Kotlin/Native program from C/C++ code.
 
 ## How do I run Kotlin/Native behind a corporate proxy?
@@ -103,32 +103,18 @@ kotlin {
 
 ## How do I enable bitcode for my Kotlin framework?
 
-By default gradle plugin adds it on iOS target.
- * For debug build it embeds placeholder LLVM IR data as a marker.
- * For release build it embeds bitcode as data.
+Bitcode embedding was deprecated in Xcode 14 and removed in Xcode 15 for all Apple targets.
+The Kotlin/Native compiler does not support bitcode embedding since Kotlin 2.0.20.
 
-Or commandline arguments: `-Xembed-bitcode` (for release) and `-Xembed-bitcode-marker` (debug)
+If you're using earlier versions of Xcode but want to upgrade to Kotlin 2.0.20 or later versions, disable bitcode
+embedding in your Xcode projects.
 
-Setting this in a Gradle DSL: 
+## Why do I see InvalidMutabilityException?
 
-```kotlin
-kotlin {
-    iosArm64("myapp") {
-        binaries {
-            framework {
-                // Use "marker" to embed the bitcode marker (for debug builds).
-                // Use "disable" to disable embedding.
-                embedBitcode("bitcode") // for release binaries.
-            }
-        }
-    }
-}
-```
-
-These options have nearly the same effect as clang's `-fembed-bitcode`/`-fembed-bitcode-marker`
-and swiftc's `-embed-bitcode`/`-embed-bitcode-marker`.
-
-## Why do I see `InvalidMutabilityException`?
+> This issue is relevant for the legacy memory manager only. Check out [Kotlin/Native memory management](native-memory-manager.md)
+> to learn about the new memory manager, which has been enabled by default since Kotlin 1.7.20.
+>
+{style="note"}
 
 It likely happens, because you are trying to mutate a frozen object. An object can transfer to the
 frozen state either explicitly, as objects reachable from objects on which the `kotlin.native.concurrent.freeze` is called,
@@ -136,9 +122,14 @@ or implicitly (i.e. reachable from `enum` or global singleton object - see the n
 
 ## How do I make a singleton object mutable?
 
+> This issue is relevant for the legacy memory manager only. Check out [Kotlin/Native memory management](native-memory-manager.md)
+> to learn about the new memory manager, which has been enabled by default since Kotlin 1.7.20.
+>
+{style="note"}
+
 Currently, singleton objects are immutable (i.e. frozen after creation), and it's generally considered
 good practise to have the global state immutable. If for some reason you need a mutable state inside such an
-object, use the `@konan.ThreadLocal` annotation on the object. Also the `kotlin.native.concurrent.AtomicReference` class could be
+object, use the `@konan.ThreadLocal` annotation on the object. Also, the `kotlin.native.concurrent.AtomicReference` class could be
 used to store different pointers to frozen objects in a frozen object and automatically update them.
 
 ## How can I compile my project with unreleased versions of Kotlin/Native?

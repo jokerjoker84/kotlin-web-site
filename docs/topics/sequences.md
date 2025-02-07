@@ -1,6 +1,7 @@
 [//]: # (title: Sequences)
 
-Along with collections, the Kotlin standard library contains another container type – _sequences_ ([`Sequence<T>`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html)).
+Along with collections, the Kotlin standard library contains another type – _sequences_ ([`Sequence<T>`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html)).
+Unlike collections, sequences don't contain elements, they produce them while iterating. 
 Sequences offer the same functions as [`Iterable`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-iterable/index.html)
 but implement another approach to multi-step collection processing.
 
@@ -143,7 +144,7 @@ the output of the two last lines.
 
 This is how the list processing goes:
 
-![List processing](list-processing.png)
+![List processing](list-processing.svg)
 
 ### Sequence
 
@@ -170,12 +171,13 @@ fun main() {
 {kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 The output of this code shows that the `filter()` and `map()` functions are called only when building the result list.
-So, you first see the line of text `“Lengths of..”` and then the sequence processing starts.
+So, you first see the line of text `"Lengths of.."` and then the sequence processing starts.
 Note that for elements left after filtering, the map executes before filtering the next element.
 When the result size reaches 4, the processing stops because it's the largest possible size that `take(4)` can return.
 
 The sequence processing goes like this:
 
-![Sequences processing](sequence-processing.png) {width="700"}
+![Sequences processing](sequence-processing.svg) {width="700"}
 
-In this example, the sequence processing takes 18 steps instead of 23 steps for doing the same with lists.
+In this example, the lazy processing of elements and stopping after finding four items reduces the number of operations
+compared to using a list approach.

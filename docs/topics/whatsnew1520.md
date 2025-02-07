@@ -1,20 +1,20 @@
 [//]: # (title: What's new in Kotlin 1.5.20)
 
-_[Release date: 24 June 2021](releases.md#release-details)_
+_[Released: 24 June 2021](releases.md#release-details)_
 
 Kotlin 1.5.20 has fixes for issues discovered in the new features of 1.5.0, and it also includes various tooling improvements.
 
 You can find an overview of the changes in the [release blog post](https://blog.jetbrains.com/kotlin/2021/06/kotlin-1-5-20-released/)
 and this video:
 
-<video href="SV8CgSXQe44" title="Kotlin 1.5.20"/>
+<video src="https://www.youtube.com/v/SV8CgSXQe44" title="Kotlin 1.5.20"/>
 
 ## Kotlin/JVM
 
 Kotlin 1.5.20 is receiving the following updates on the JVM platform: 
 * [String concatenation via invokedynamic](#string-concatenation-via-invokedynamic)
 * [Support for JSpecify nullness annotations](#support-for-jspecify-nullness-annotations)
-* [Support for calling Java’s Lombok-generated methods within modules that have Kotlin and Java code](#support-for-calling-java-s-lombok-generated-methods-within-modules-that-have-kotlin-and-java-code)
+* [Support for calling Java's Lombok-generated methods within modules that have Kotlin and Java code](#support-for-calling-java-s-lombok-generated-methods-within-modules-that-have-kotlin-and-java-code)
 
 ### String concatenation via invokedynamic
 
@@ -26,7 +26,7 @@ for string concatenation.
 To switch back to concatenation via [`StringBuilder.append()`](https://docs.oracle.com/javase/9/docs/api/java/lang/StringBuilder.html#append-java.lang.String-)
 used in previous versions, add the compiler option `-Xstring-concat=inline`.
 
-Learn how to add compiler options in [Gradle](gradle.md#compiler-options), [Maven](maven.md#specifying-compiler-options), and the [command-line compiler](compiler-reference.md#compiler-options).
+Learn how to add compiler options in [Gradle](gradle-compiler-options.md), [Maven](maven.md#specify-compiler-options), and the [command-line compiler](compiler-reference.md#compiler-options).
 
 ### Support for JSpecify nullness annotations
 
@@ -36,7 +36,7 @@ which includes the standard unified set of Java nullness annotations.
 
 With JSpecify, you can provide more detailed nullability information to help Kotlin keep null-safety interoperating with
 Java. You can set default nullability for the declaration, package, or module scope, specify parametric nullability,
-and more. You can find more details about this in the [JSpecify user guide](https://jspecify.dev/user-guide.html).
+and more. You can find more details about this in the [JSpecify user guide](https://jspecify.dev/docs/user-guide).
 
 Here is the example of how Kotlin can handle JSpecify annotations:
 
@@ -66,16 +66,16 @@ Please note that the JSpecify project is under active development. Its API and i
 
 [Learn more about null-safety and platform types](java-interop.md#null-safety-and-platform-types).
 
-### Support for calling Java’s Lombok-generated methods within modules that have Kotlin and Java code
+### Support for calling Java's Lombok-generated methods within modules that have Kotlin and Java code
 
 > The Lombok compiler plugin is [Experimental](components-stability.md).
 > It may be dropped or changed at any time. Use it only for evaluation purposes.
 > We would appreciate your feedback on it in [YouTrack](https://youtrack.jetbrains.com/issue/KT-7112).
 >
-{type="warning"}
+{style="warning"}
 
 Kotlin 1.5.20 introduces an experimental [Lombok compiler plugin](lombok.md). This plugin makes it possible to generate
-and use Java’s [Lombok](https://projectlombok.org/) declarations within modules that have Kotlin and Java code. Lombok
+and use Java's [Lombok](https://projectlombok.org/) declarations within modules that have Kotlin and Java code. Lombok
 annotations work only in Java sources and are ignored if you use them in Kotlin code.
 
 The plugin supports the following annotations:
@@ -85,7 +85,7 @@ The plugin supports the following annotations:
 * `@With`
 * `@Value`
 
-We're continuing to work on this plugin. To find out the detailed current state, visit the [Lombok compiler plugin's README](https://github.com/JetBrains/kotlin/blob/master/plugins/lombok/lombok-compiler-plugin/README.md).
+We're continuing to work on this plugin. To find out the detailed current state, visit the [Lombok compiler plugin's README](https://github.com/JetBrains/kotlin/tree/master/plugins/lombok).
 
 Currently, we don't have plans to support the `@Builder` annotation. However, we can consider this if you vote
 for [`@Builder` in YouTrack](https://youtrack.jetbrains.com/issue/KT-46959).
@@ -107,10 +107,10 @@ Kotlin/Native 1.5.20 offers a preview of the new feature and the tooling improve
 > Opt-in is required (see the details below), and you should use it only for evaluation purposes.
 > We would appreciate your feedback on it in [YouTrack](https://youtrack.jetbrains.com/issue/KT-38600).
 >
-{type="warning"}
+{style="warning"}
 
 You can now set the Kotlin/Native compiler to export the [documentation comments (KDoc)](kotlin-doc.md) from Kotlin code
-to the Objective-C frameworks generated from it, making them visible to the frameworks’ consumers.
+to the Objective-C frameworks generated from it, making them visible to the frameworks' consumers.
 
 For example, the following Kotlin code with KDoc:
 
@@ -162,7 +162,7 @@ kotlin {
 </tab>
 </tabs>
 
-We’d be very grateful if you would share your feedback with us using this [YouTrack ticket](https://youtrack.jetbrains.com/issue/KT-38600).
+We would be very grateful if you would share your feedback with us using this [YouTrack ticket](https://youtrack.jetbrains.com/issue/KT-38600).
 
 ### Compiler bug fixes
 
@@ -176,19 +176,19 @@ See [this YouTrack issue](https://youtrack.jetbrains.com/issue/KT-33175) for det
 
 ### Improved performance of Array.copyInto() inside one array
 
-We’ve improved the way `Array.copyInto()` works when its source and destination are the same array. Now such operations
+We've improved the way `Array.copyInto()` works when its source and destination are the same array. Now such operations
 finish up to 20 times faster (depending on the number of objects being copied) due to memory management optimizations
 for this use case.
 
 ## Kotlin/JS
 
-With 1.5.20, we’re publishing a guide that will help you migrate your projects to the new [IR-based backend](js-ir-compiler.md)
+With 1.5.20, we're publishing a guide that will help you migrate your projects to the new [IR-based backend](js-ir-compiler.md)
 for Kotlin/JS.
 
 ### Migration guide for the JS IR backend
 
 The new [migration guide for the JS IR backend](js-ir-migration.md) identifies issues you may encounter during migration
-and provides solutions for them. If you find any issues that aren’t covered in the guide, please report them to our [issue tracker](http://kotl.in/issue).
+and provides solutions for them. If you find any issues that aren't covered in the guide, please report them to our [issue tracker](http://kotl.in/issue).
 
 ## Gradle
 
@@ -203,14 +203,14 @@ Kotlin 1.5.20 introduces the following features that can improve the Gradle expe
 > It may be dropped or changed at any time. Use it only for evaluation purposes.
 > We would appreciate your feedback on it in [YouTrack](https://youtrack.jetbrains.com/issue/KT-28901).
 >
-{type="warning"}
+{style="warning"}
 
 There is now a new experimental feature that makes it possible to cache the classloaders of annotation processors in [kapt](kapt.md).
 This feature can increase the speed of kapt for consecutive Gradle runs.
 
 To enable this feature, use the following properties in your `gradle.properties` file:
 
-```properties
+```none
 # positive value will enable caching
 # use the same value as the number of modules that use kapt
 kapt.classloaders.cache.size=5

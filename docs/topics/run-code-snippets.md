@@ -22,7 +22,11 @@ IntelliJ IDEA and Android Studio support Kotlin [scratch files and worksheets](h
   in a project, such as educational or demo materials.
 
   To create a Kotlin worksheet in a project directory, right-click the directory in the project tree and select
-  **New** | **Kotlin Worksheet**.
+  **New** | **Kotlin Class/File** | **Kotlin Worksheet**.
+
+    > Kotlin worksheets aren't supported in [K2 mode](https://blog.jetbrains.com/idea/2024/11/k2-mode-becomes-stable/). We're working on providing an alternative with similar functionality.
+    >
+    {style="warning"}
 
 Syntax highlighting, auto-completion, and other
 IntelliJ IDEA code editing features are supported in scratches and worksheets. There's no need to declare the `main()` function 
@@ -70,11 +74,11 @@ Kotlin code in your browser.
 
 ### Write and edit code
 
-In the Playground’s editor area, you can write code just as you would in a source file:
+In the Playground's editor area, you can write code just as you would in a source file:
 * Add your own classes, functions, and top-level declarations in an arbitrary order.
 * Write the executable part in the body of the `main()` function.
 
-As in typical Kotlin projects, the `main` function in the Playground can have the `args` parameter or no parameters at all.
+As in typical Kotlin projects, the `main()` function in the Playground can have the `args` parameter or no parameters at all.
 To pass program arguments upon execution, write them in the **Program arguments** field.
 
 ![Playground: code completion](playground-completion.png){width=700}
@@ -124,7 +128,7 @@ unzip it in the directory of your choice.
 
 On macOS, you can also install the ki shell with Homebrew by running the following command:
 
-```Shell
+```shell
 brew install ki
 ```
 
@@ -174,4 +178,3 @@ To add a third-party library in the ki shell, use the `:dependsOn` command. By d
 but you can use other repositories if you connect them using the `:repository` command:
 
 ![ki shell external dependency](ki-shell-dependency.png){width=700}
-

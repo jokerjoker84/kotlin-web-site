@@ -15,7 +15,7 @@ this [video](https://www.youtube.com/watch?v=F8jj7e-_jFA) by Sebastian Aigner, K
 
 > All of the examples below use Java and Kotlin standard library APIs only.
 >
-{type="note"}
+{style="note"}
 
 ## Operations that are the same in Java and Kotlin
 
@@ -100,7 +100,7 @@ To perform all of the operations listed above on maps, you first need to get an 
 If you want to take a deep dive into `zip()`, `chunked()`, `windowed()`, and some other operations, watch this video by Sebastian Aigner 
 about advanced collection operations in Kotlin:
 
-<video href="N4CpLxGJlq0" title="Advanced Collection Operations"/>
+<video src="https://www.youtube.com/v/N4CpLxGJlq0" title="Advanced Collection Operations"/>
 
 ## Mutability
 
@@ -109,7 +109,7 @@ In Java, there are mutable collections:
 ```java
 // Java
 // This list is mutable!
-public List<Customer> getCustomers() { … }
+public List<Customer> getCustomers() { ... }
 ```
 {id="mutability-java"}
 
@@ -197,11 +197,11 @@ fun main() {
 ```
 {kotlin-runnable="true" id="covariance-kotlin"}
 
-Read more about [collection types](collections-overview.md#collection-types)here.
+Read more about [collection types](collections-overview.md#collection-types) here.
 
 ## Ranges and progressions
 
-In Kotlin, you can create intervals using [ranges](ranges.md#range). For example, `Version(1, 11)..Version(1, 30)` includes all of the versions from `1.11` to `1.30`. 
+In Kotlin, you can create intervals using [ranges](ranges.md). For example, `Version(1, 11)..Version(1, 30)` includes all of the versions from `1.11` to `1.30`. 
 You can check that your version is in the range by using the `in` operator: `Version(0, 9) in versionRange`.
 
 In Java, you need to manually check whether a `Version` fits both bounds:
@@ -277,7 +277,7 @@ and [`thenComparingX()`](https://docs.oracle.com/javase/8/docs/api/java/util/Com
 functions from the [`Comparator`](https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html) interface. 
 For example, to compare people by their name and age:
 
-```Java
+```java
 class Person implements Comparable<Person> {
     String name;
     int age;
@@ -502,7 +502,7 @@ fun main() {
 In Java, you can group elements with the [Collectors](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Collectors.html) 
 function `groupingBy()`:
 
-```Java
+```java
 // Java
 public void analyzeLogs() {
     var requests = List.of(
@@ -520,7 +520,7 @@ public void analyzeLogs() {
 In Kotlin, use the function [`groupBy()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/group-by.html):
 
 ```kotlin
-class Request(
+data class Request(
     val url: String,
     val responseCode: Int
 )
@@ -697,7 +697,7 @@ fun main() {
 > If collections have different sizes, the result of `zip()` is the smaller size. The last elements of 
 the larger collection are not included in the result.
 >
-{type="note"}
+{style="note"}
 
 ### Associate elements
 

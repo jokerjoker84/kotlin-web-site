@@ -1,15 +1,22 @@
 [//]: # (title: Type checks and casts)
 
+In Kotlin, you can perform type checks to check the type of an object at runtime. Type casts enable you to convert objects to a 
+different type.
+
+> To learn specifically about **generics** type checks and casts, for example `List<T>`, `Map<K,V>`, see [Generics type checks and casts](generics.md#generics-type-checks-and-casts).
+>
+{style="tip"}
+
 ## is and !is operators
 
-Use the `is` operator or its negated form `!is` to perform a runtime check that identifies whether an object conforms to a given type:
+To perform a runtime check that identifies whether an object conforms to a given type, use the `is` operator or its negated form `!is`:
 
 ```kotlin
 if (obj is String) {
     print(obj.length)
 }
 
-if (obj !is String) { // same as !(obj is String)
+if (obj !is String) { // Same as !(obj is String)
     print("Not a String")
 } else {
     print(obj.length)
@@ -18,8 +25,9 @@ if (obj !is String) { // same as !(obj is String)
 
 ## Smart casts
 
-In most cases, you don't need to use explicit cast operators in Kotlin because the compiler tracks the
-`is`-checks and [explicit casts](#unsafe-cast-operator) for immutable values and inserts (safe) casts automatically when necessary:
+In most cases, you don't need to use explicit cast operators because the compiler automatically casts objects for you.
+This is called smart-casting. The compiler tracks the type checks and [explicit casts](#unsafe-cast-operator) for immutable
+values and inserts implicit (safe) casts automatically when necessary:
 
 ```kotlin
 fun demo(x: Any) {
@@ -29,7 +37,7 @@ fun demo(x: Any) {
 }
 ```
 
-The compiler is smart enough to know that a cast is safe if a negative check leads to a return:
+The compiler is even smart enough to know that a cast is safe if a negative check leads to a return:
 
 ```kotlin
 if (x !is String) return
@@ -37,7 +45,56 @@ if (x !is String) return
 print(x.length) // x is automatically cast to String
 ```
 
-or if it is on the right-hand side of `&&` or `||` and the proper check (regular or negative) is on the left-hand side:
+### Control flow
+
+Smart casts work not only for `if` conditional expressions but also for [`when` expressions](control-flow.md#when-expressions-and-statements)
+and [`while` loops](control-flow.md#while-loops):
+
+```kotlin
+when (x) {
+    is Int -> print(x + 1)
+    is String -> print(x.length + 1)
+    is IntArray -> print(x.sum())
+}
+```
+
+If you declare a variable of `Boolean` type before using it in your `if`, `when`, or `while` condition, then any
+information collected by the compiler about the variable will be accessible in the corresponding block for
+smart-casting.
+
+This can be useful when you want to do things like extract boolean conditions into variables. Then, you can give the
+variable a meaningful name, which will improve your code readability and make it possible to reuse the variable later
+in your code. For example:
+
+```kotlin
+class Cat {
+    fun purr() {
+        println("Purr purr")
+    }
+}
+
+fun petAnimal(animal: Any) {
+    val isCat = animal is Cat
+    if (isCat) {
+        // The compiler can access information about
+        // isCat, so it knows that animal was smart-cast
+        // to the type Cat.
+        // Therefore, the purr() function can be called.
+        animal.purr()
+    }
+}
+
+fun main(){
+    val kitty = Cat()
+    petAnimal(kitty)
+    // Purr purr
+}
+```
+{kotlin-runnable="true" kotlin-min-compiler-version="2.0" id="kotlin-smart-casts-local-variables" validate="false"}
+
+### Logical operators
+
+The compiler can perform smart casts on the right-hand side of `&&` or `||` operators if there is a type check (regular or negative) on the left-hand side:
 
 ```kotlin
 // x is automatically cast to String on the right-hand side of `||`
@@ -49,37 +106,165 @@ if (x is String && x.length > 0) {
 }
 ```
 
-Smart casts work for [`when` expressions](control-flow.md#when-expression)
-and [`while` loops](control-flow.md#while-loops) as well:
+If you combine type checks for objects with an `or` operator (`||`), a smart cast is made to their closest common supertype:
 
 ```kotlin
-when (x) {
-    is Int -> print(x + 1)
-    is String -> print(x.length + 1)
-    is IntArray -> print(x.sum())
+interface Status {
+    fun signal() {}
+}
+
+interface Ok : Status
+interface Postponed : Status
+interface Declined : Status
+
+fun signalCheck(signalStatus: Any) {
+    if (signalStatus is Postponed || signalStatus is Declined) {
+        // signalStatus is smart-cast to a common supertype Status
+        signalStatus.signal()
+    }
 }
 ```
 
-Note that smart casts work only when the compiler can guarantee that the variable won't change between the check and the usage.
-More specifically, smart casts can be used under the following conditions:
+> The common supertype is an **approximation** of a [union type](https://en.wikipedia.org/wiki/Union_type). Union types
+> are [not currently supported in Kotlin](https://youtrack.jetbrains.com/issue/KT-13108/Denotable-union-and-intersection-types).
+>
+{style="note"}
 
-* `val` local variables - always, with the exception of [local delegated properties](delegated-properties.md).
-* `val` properties - if the property is private or internal or if the check is performed in the same [module](visibility-modifiers.md#modules) where the property is declared. Smart casts cannot be used on open properties or properties that have custom getters.
-* `var` local variables - if the variable is not modified between the check and the usage, is not captured in a lambda that modifies it, and is not a local delegated property.
-* `var` properties - never, because the variable can be modified at any time by other code.
+### Inline functions
+
+The compiler can smart-cast variables captured within lambda functions that are passed to [inline functions](inline-functions.md).
+
+Inline functions are treated as having an implicit [`callsInPlace`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.contracts/-contract-builder/calls-in-place.html)
+contract. This means that any lambda functions passed to an inline function are called in place. Since lambda functions
+are called in place, the compiler knows that a lambda function can't leak references to any variables contained within
+its function body.
+
+The compiler uses this knowledge, along with other analyses to decide whether it's safe to smart-cast any of the
+captured variables. For example:
+
+```kotlin
+interface Processor {
+    fun process()
+}
+
+inline fun inlineAction(f: () -> Unit) = f()
+
+fun nextProcessor(): Processor? = null
+
+fun runProcessor(): Processor? {
+    var processor: Processor? = null
+    inlineAction {
+        // The compiler knows that processor is a local variable and inlineAction()
+        // is an inline function, so references to processor can't be leaked.
+        // Therefore, it's safe to smart-cast processor.
+      
+        // If processor isn't null, processor is smart-cast
+        if (processor != null) {
+            // The compiler knows that processor isn't null, so no safe call 
+            // is needed
+            processor.process()
+        }
+
+        processor = nextProcessor()
+    }
+
+    return processor
+}
+```
+
+### Exception handling
+
+Smart cast information is passed on to `catch` and `finally` blocks. This makes your code safer
+as the compiler tracks whether your object has a nullable type. For example:
+
+```kotlin
+//sampleStart
+fun testString() {
+    var stringInput: String? = null
+    // stringInput is smart-cast to String type
+    stringInput = ""
+    try {
+        // The compiler knows that stringInput isn't null
+        println(stringInput.length)
+        // 0
+
+        // The compiler rejects previous smart cast information for 
+        // stringInput. Now stringInput has the String? type.
+        stringInput = null
+
+        // Trigger an exception
+        if (2 > 1) throw Exception()
+        stringInput = ""
+    } catch (exception: Exception) {
+        // The compiler knows stringInput can be null
+        // so stringInput stays nullable.
+        println(stringInput?.length)
+        // null
+    }
+}
+//sampleEnd
+fun main() {
+    testString()
+}
+```
+{kotlin-runnable="true" kotlin-min-compiler-version="2.0" id="kotlin-smart-casts-exception-handling"}
+
+### Smart cast prerequisites
+
+> Note that smart casts work only when the compiler can guarantee that the variable won't change between the check and its usage.
+>
+{style="warning"}
+
+Smart casts can be used in the following conditions:
+
+<table style="none">
+    <tr>
+        <td>
+            <code>val</code> local variables
+        </td>
+        <td>
+            Always, except <a href="delegated-properties.md">local delegated properties</a>.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <code>val</code> properties
+        </td>
+        <td>
+            If the property is <code>private</code>, <code>internal</code>, or if the check is performed in the same <a href="visibility-modifiers.md#modules">module</a> where the property is declared. Smart casts can't be used on <code>open</code> properties or properties that have custom getters.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <code>var</code> local variables
+        </td>
+        <td>
+            If the variable is not modified between the check and its usage, is not captured in a lambda that modifies it, and is not a local delegated property.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <code>var</code> properties
+        </td>
+        <td>
+            Never, because the variable can be modified at any time by other code.
+        </td>
+    </tr>
+</table>
 
 ## "Unsafe" cast operator
 
-Usually, the cast operator throws an exception if the cast isn't possible. And so, it's called *unsafe*.
-The unsafe cast in Kotlin is done by the infix operator `as`.
+To explicitly cast an object to a non-nullable type, use the *unsafe* cast operator `as`:
 
 ```kotlin
 val x: String = y as String
 ```
 
-Note that `null` cannot be cast to `String`, as this type is not [nullable](null-safety.md).
-If `y` is null, the code above throws an exception.
-To make code like this correct for null values, use the nullable type on the right-hand side of the cast:
+If the cast isn't possible, the compiler throws an exception. This is why it's called _unsafe_.
+
+In the previous example, if `y` is `null`, the code above also throws an exception. This is because `null` can't be cast
+to `String`, as `String` isn't [nullable](null-safety.md). To make the example work for possible null values, use a nullable
+type on the right-hand side of the cast:
 
 ```kotlin
 val x: String? = y as String?
@@ -93,115 +278,4 @@ To avoid exceptions, use the *safe* cast operator `as?`, which returns `null` on
 val x: String? = y as? String
 ```
 
-Note that despite the fact that the right-hand side of `as?` is a non-null type `String`, the result of the cast is nullable.
-
-## Type erasure and generic type checks
-
-Kotlin ensures type safety for operations involving [generics](generics.md) at compile time,
-while, at runtime, instances of generic types don't hold information about their actual type arguments. For example,
-`List<Foo>` is erased to just `List<*>`. In general, there is no way to check whether an instance belongs to a generic
-type with certain type arguments at runtime.
-
-Because of that, the compiler prohibits `is`-checks that cannot be performed at runtime due to type erasure, such as
-`ints is List<Int>` or `list is T` (type parameter). You can, however, check an instance against a [star-projected type](generics.md#star-projections):
-
-```kotlin
-if (something is List<*>) {
-    something.forEach { println(it) } // The items are typed as `Any?`
-}
-```
-
-Similarly, when you already have the type arguments of an instance checked statically (at compile time),
-you can make an `is`-check or a cast that involves the non-generic part of the type. Note that
-angle brackets are omitted in this case:
-
-```kotlin
-fun handleStrings(list: List<String>) {
-    if (list is ArrayList) {
-        // `list` is smart-cast to `ArrayList<String>`
-    }
-}
-```
-
-The same syntax but with the type arguments omitted can be used for casts that do not take type arguments into account: `list as ArrayList`.
-
-Inline functions with [reified type parameters](inline-functions.md#reified-type-parameters) have their actual type arguments
-inlined at each call site. This enables `arg is T` checks for the type parameters, but if `arg` is an instance of a
-generic type itself, *its* type arguments are still erased.
-
-```kotlin
-//sampleStart
-inline fun <reified A, reified B> Pair<*, *>.asPairOf(): Pair<A, B>? {
-    if (first !is A || second !is B) return null
-    return first as A to second as B
-}
-
-val somePair: Pair<Any?, Any?> = "items" to listOf(1, 2, 3)
-
-
-val stringToSomething = somePair.asPairOf<String, Any>()
-val stringToInt = somePair.asPairOf<String, Int>()
-val stringToList = somePair.asPairOf<String, List<*>>()
-val stringToStringList = somePair.asPairOf<String, List<String>>() // Compiles but breaks type safety!
-// Expand the sample for more details
-
-//sampleEnd
-
-fun main() {
-    println("stringToSomething = " + stringToSomething)
-    println("stringToInt = " + stringToInt)
-    println("stringToList = " + stringToList)
-    println("stringToStringList = " + stringToStringList)
-    //println(stringToStringList?.second?.forEach() {it.length}) // This will throw ClassCastException as list items are not String
-}
-```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
-
-## Unchecked casts
-
-As established above, type erasure makes checking the actual type arguments of a generic type instance impossible at runtime.
-Additionally, generic types in the code might not be connected to each other closely enough for the compiler to ensure
-type safety.
-
-Even so, sometimes we have high-level program logic that implies type safety instead. For example:
-
-```kotlin
-fun readDictionary(file: File): Map<String, *> = file.inputStream().use {
-   TODO("Read a mapping of strings to arbitrary elements.")
-}
-
-// We saved a map with `Int`s into this file
-val intsFile = File("ints.dictionary")
-
-// Warning: Unchecked cast: `Map<String, *>` to `Map<String, Int>`
-val intsDictionary: Map<String, Int> = readDictionary(intsFile) as Map<String, Int>
-```
-
-A warning appears for the cast in the last line. The compiler can't fully check it at runtime and provides
-no guarantee that the values in the map are `Int`.
-
-To avoid unchecked casts, you can redesign the program structure. In the example above, you could use the
-`DictionaryReader<T>` and `DictionaryWriter<T>` interfaces with type-safe implementations for different types.
-You can introduce reasonable abstractions to move unchecked casts from the call site to the implementation details.
-Proper use of [generic variance](generics.md#variance) can also help.
-
-For generic functions, using [reified type parameters](inline-functions.md#reified-type-parameters) makes casts
-like `arg as T` checked, unless `arg`'s type has *its own* type arguments that are erased.
-
-An unchecked cast warning can be suppressed by [annotating](annotations.md) the statement or the
-declaration where it occurs with `@Suppress("UNCHECKED_CAST")`:
-
-```kotlin
-inline fun <reified T> List<*>.asListOfType(): List<T>? =
-    if (all { it is T })
-        @Suppress("UNCHECKED_CAST")
-        this as List<T> else
-        null
-```
-
->**On the JVM**: [array types](basic-types.md#arrays) (`Array<Foo>`) retain information about the erased type of
->their elements, and type casts to an array type are partially checked: the
->nullability and actual type arguments of the element type are still erased. For example,
->the cast `foo as Array<List<String>?>` will succeed if `foo` is an array holding any `List<*>`, whether it is nullable or not.
->
-{type="note"}
+Note that despite the fact that the right-hand side of `as?` is a non-nullable type `String`, the result of the cast is nullable.

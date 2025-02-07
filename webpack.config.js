@@ -21,11 +21,11 @@ module.exports = (params = {}) => {
       //shared
       'common': './static/js/page/common.js',
       'index': './static/js/page/index/index.js',
-      'videos': './static/js/page/videos.js',
       'grammar': './static/js/page/grammar.js',
       'api': './static/js/page/api/api.js',
       'reference': './static/js/page/reference.js',
       'tutorial': './static/js/page/tutorial.js',
+      'dokka-template': './static/js/page/dokka-template/index.js',
       'styles': './static/css/styles.scss',
       'styles-v2': './static/css/styles-v2.scss'
     },
@@ -84,14 +84,6 @@ module.exports = (params = {}) => {
               }
             }
           ]
-        },
-        {
-          test: /\.twig$/,
-          loader: 'nunjucks-loader'
-        },
-        {
-          test: /\.mustache$/,
-          loader: 'mustache-loader'
         },
         {
           test: /\.svg(?:\?\w+)?$/,
@@ -164,7 +156,8 @@ module.exports = (params = {}) => {
 
       new webpack.DefinePlugin({
         indexName: JSON.stringify(indexName),
-        'process.env.NODE_ENV': JSON.stringify(env)
+        'process.env.NODE_ENV': JSON.stringify(env),
+        'process.env.ALGOLIA_INDEX_NAME': JSON.stringify(process.env.ALGOLIA_INDEX_NAME)
       })
     ].filter(Boolean),
 
