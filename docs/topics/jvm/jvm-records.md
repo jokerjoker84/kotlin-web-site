@@ -34,7 +34,7 @@ To declare a record class in Kotlin, use the `@JvmRecord` annotation:
 
 > Applying `@JvmRecord` to an existing class is not a binary compatible change. It alters the naming convention of the class property accessors.
 >
-{type="note"}
+{style="note"}
 
 ```kotlin
 @JvmRecord
@@ -63,7 +63,7 @@ To declare a data class with the `@JvmRecord` annotation, it must meet the follo
 
 JVM records require the `16` target version or higher of the generated JVM bytecode.
 
-To specify it explicitly, use the `jvmTarget` compiler option in [Gradle](gradle.md#attributes-specific-to-jvm) or [Maven](maven.md#attributes-specific-to-jvm).
+To specify it explicitly, use the `jvmTarget` compiler option in [Gradle](gradle-compiler-options.md#attributes-specific-to-jvm) or [Maven](maven.md#attributes-specific-to-jvm).
 
 ## Further discussion
 

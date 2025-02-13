@@ -34,7 +34,7 @@ function Index() {
                     },
                     {
                         icon: TwitterIcon,
-                        title: 'Twitter',
+                        title: 'X',
                         description: 'Quick tips and news, straight to your feed.',
                         link: 'https://twitter.com/kotlin',
                     },
@@ -65,7 +65,7 @@ function Index() {
                     {
                         icon: TalkingKotlinIcon,
                         title: 'Talking Kotlin',
-                        description: 'Interviews with community members.',
+                        description: 'A podcast with Kotlin experts.',
                         link: 'http://talkingkotlin.com/',
                     },
                     {
@@ -78,7 +78,7 @@ function Index() {
                         icon: YoutrackIcon,
                         title: 'Issue Tracker',
                         description: 'Share feedback and report bugs.',
-                        link: 'https://youtrack.jetbrains.com/issues/',
+                        link: 'https://youtrack.jetbrains.com/issues/kt',
                     },
                 ]}
             />

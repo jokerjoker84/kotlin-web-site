@@ -1,6 +1,6 @@
 [//]: # (title: What's new in Kotlin 1.5.30)
 
-_[Release date: 24 August 2021](releases.md#release-details)_
+_[Released: 24 August 2021](releases.md#release-details)_
 
 Kotlin 1.5.30 offers language updates including previews of future changes, various improvements in platform support and tooling, and new standard library functions.
 
@@ -12,7 +12,7 @@ Here are some major improvements:
 
 You can also find a short overview of the changes in the [release blog post](https://blog.jetbrains.com/kotlin/2021/08/kotlin-1-5-30-released/) and this video:
 
-<video href="rNbb3A9IdOo" title="Kotlin 1.5.30"/>
+<video src="https://www.youtube.com/v/rNbb3A9IdOo" title="Kotlin 1.5.30"/>
 
 ## Language features
 
@@ -30,15 +30,15 @@ and type inference:
 > Support for sealed (exhaustive) when statements is [Experimental](components-stability.md). It may be dropped or changed at any time.
 > Opt-in is required (see the details below), and you should use it only for evaluation purposes. We would appreciate your feedback on it in [YouTrack](https://youtrack.jetbrains.com/issue/KT-12380).
 >
-{type="warning"}
+{style="warning"}
 
-An _exhaustive_ [`when`](control-flow.md#when-expression) statement contains branches for all possible types or values of its subject or for some types plus an `else` branch. In other words, it covers all possible cases.
+An _exhaustive_ [`when`](control-flow.md#when-expressions-and-statements) statement contains branches for either all possible types or values of its subject, or for certain types and includes an `else` branch to cover any remaining cases.
 
-We’re planning to prohibit non-exhaustive `when` statements soon to make the behavior consistent with `when` expressions. To ensure smooth migration, you can configure the compiler to report warnings about non-exhaustive `when` statements with a sealed class or a Boolean. Such warnings will appear by default in Kotlin 1.6 and will become errors later.
+We're planning to prohibit non-exhaustive `when` statements soon to make the behavior consistent with `when` expressions. To ensure smooth migration, you can configure the compiler to report warnings about non-exhaustive `when` statements with a sealed class or a Boolean. Such warnings will appear by default in Kotlin 1.6 and will become errors later.
 
 > Enums already get a warning.
 >
-{type="note"}
+{style="note"}
 
 ```kotlin
 sealed class Mode {
@@ -101,7 +101,7 @@ kotlin {
 > Support for suspending functions as supertypes is [Experimental](components-stability.md). It may be dropped or changed at any time.
 > Opt-in is required (see the details below), and you should use it only for evaluation purposes. We would appreciate your feedback on it in [YouTrack](https://youtrack.jetbrains.com/issue/KT-18707).
 >
-{type="warning"}
+{style="warning"}
 
 Kotlin 1.5.30 provides a preview of the ability to use a `suspend` functional type as a supertype with some limitations.
 
@@ -143,8 +143,8 @@ kotlin {
 </tabs>
 
 The feature has the following restrictions:
-* You can’t mix an ordinary functional type and a `suspend` functional type as supertype. This is because of the implementation details of `suspend` functional types in the JVM backend. They are represented in it as ordinary functional types with a marker interface. Because of the marker interface, there is no way to tell which of the superinterfaces are suspended and which are ordinary.
-* You can't use multiple `suspend` functional supertypes. If there are type checks, you also can’t use multiple ordinary functional supertypes.
+* You can't mix an ordinary functional type and a `suspend` functional type as supertype. This is because of the implementation details of `suspend` functional types in the JVM backend. They are represented in it as ordinary functional types with a marker interface. Because of the marker interface, there is no way to tell which of the superinterfaces are suspended and which are ordinary.
+* You can't use multiple `suspend` functional supertypes. If there are type checks, you also can't use multiple ordinary functional supertypes.
 
 ### Requiring opt-in on implicit usages of experimental APIs
 
@@ -152,11 +152,11 @@ The feature has the following restrictions:
 > It may change at any time. [See how to opt-in](opt-in-requirements.md).
 > Use it only for evaluation purposes. We would appreciate your feedback on it in [YouTrack](https://youtrack.jetbrains.com/issues/KT).
 >
-{type="warning"}
+{style="warning"}
 
-The author of a library can mark an experimental API as [requiring opt-in](opt-in-requirements.md#create-opt-in-requirement-annotations) to inform users about its experimental state. The compiler raises a warning or error when the API is used and requires [explicit consent](opt-in-requirements.md#opt-in-to-using-api) to suppress it.
+The author of a library can mark an experimental API as [requiring opt-in](opt-in-requirements.md#create-opt-in-requirement-annotations) to inform users about its experimental state. The compiler raises a warning or error when the API is used and requires [explicit consent](opt-in-requirements.md#opt-in-to-api) to suppress it.
 
-In Kotlin 1.5.30, the compiler treats any declaration that has an experimental type in the signature as experimental. Namely, it requires opt-in even for implicit usages of an experimental API. For example, if the function’s return type is marked as an experimental API element, a usage of the function requires you to opt-in even if the declaration is not marked as requiring an opt-in explicitly.
+In Kotlin 1.5.30, the compiler treats any declaration that has an experimental type in the signature as experimental. Namely, it requires opt-in even for implicit usages of an experimental API. For example, if the function's return type is marked as an experimental API element, a usage of the function requires you to opt-in even if the declaration is not marked as requiring an opt-in explicitly.
 
 ```kotlin
 // Library code
@@ -188,7 +188,7 @@ Learn more about [opt-in requirements](opt-in-requirements.md).
 > It may change at any time. [See how to opt-in](opt-in-requirements.md).
 > Use it only for evaluation purposes. We would appreciate your feedback on it in [YouTrack](https://youtrack.jetbrains.com/issues/KT).
 >
-{type="warning"}
+{style="warning"}
 
 Kotlin 1.5.30 presents new rules for using and declaring opt-in requirement annotations on different [targets](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.annotation/-target/). The compiler now reports an error for use cases that are impractical to handle at compile time. In Kotlin 1.5.30:
 * Marking local variables and value parameters with opt-in requirement annotations is forbidden at the use site.
@@ -264,7 +264,7 @@ See the [Gradle](#gradle) section for Kotlin Gradle plugin updates on the JVM pl
 > Instantiation of annotation classes is [Experimental](components-stability.md). It may be dropped or changed at any time.
 > Opt-in is required (see the details below), and you should use it only for evaluation purposes. We would appreciate your feedback on it in [YouTrack](https://youtrack.jetbrains.com/issue/KT-45395).
 >
-{type="warning"}
+{style="warning"}
 
 With Kotlin 1.5.30 you can now call constructors of [annotation classes](annotations.md) in arbitrary code to obtain a resulting instance. This feature covers the same use cases as the Java convention that allows the implementation of an annotation interface.
 
@@ -313,7 +313,7 @@ Kotlin 1.5.30 introduces native support for [Apple silicon](https://support.appl
 
 Previously, the Kotlin/Native compiler and tooling required the [Rosetta translation environment](https://developer.apple.com/documentation/apple-silicon/about-the-rosetta-translation-environment) for working on Apple silicon hosts. In Kotlin 1.5.30, the translation environment is no longer needed – the compiler and tooling can run on Apple silicon hardware without requiring any additional actions.
 
-We’ve also introduced new targets that make Kotlin code run natively on Apple silicon:
+We've also introduced new targets that make Kotlin code run natively on Apple silicon:
 * `macosArm64`
 * `iosSimulatorArm64`
 * `watchosSimulatorArm64`
@@ -321,14 +321,14 @@ We’ve also introduced new targets that make Kotlin code run natively on Apple 
 
 They are available on both Intel-based and Apple silicon hosts. All existing targets are available on Apple silicon hosts as well.
 
-Note that in 1.5.30 we provide only basic support for Apple silicon targets in the `kotlin-multiplatform` Gradle plugin. Particularly, the new simulator targets aren’t included in the [`ios`, `tvos`, and `watchos` target shortcuts](multiplatform-share-on-platforms.md#use-target-shortcuts). Learn how to [use Apple silicon targets with the target shortcuts](multiplatform-share-on-platforms.md#target-shortcuts-and-arm64-apple-silicon-simulators).
+Note that in 1.5.30 we provide only basic support for Apple silicon targets in the `kotlin-multiplatform` Gradle plugin. Particularly, the new simulator targets aren't included in the `ios`, `tvos`, and `watchos` target shortcuts.
 We will keep working to improve the user experience with the new targets.
 
 ### Improved Kotlin DSL for the CocoaPods Gradle plugin
 
 #### New parameters for Kotlin/Native frameworks
 
-Kotlin 1.5.30 introduces the improved CocoaPods Gradle plugin DSL for Kotlin/Native frameworks. In addition to the name of the framework, you can specify other parameters in the pod configuration:
+Kotlin 1.5.30 introduces the improved CocoaPods Gradle plugin DSL for Kotlin/Native frameworks. In addition to the name of the framework, you can specify other parameters in the Pod configuration:
 * Specify the dynamic or static version of the framework
 * Enable export dependencies explicitly
 * Enable Bitcode embedding
@@ -358,7 +358,7 @@ cocoapods {
 
 #### Support custom names for Xcode configuration
 
-The Kotlin CocoaPods Gradle plugin supports custom names in the Xcode build configuration. It will also help you if you’re using special names for the build configuration in Xcode, for example `Staging`.
+The Kotlin CocoaPods Gradle plugin supports custom names in the Xcode build configuration. It will also help you if you're using special names for the build configuration in Xcode, for example `Staging`.
 
 To specify a custom name, use the `xcodeConfigurationToNativeBuildType` parameter in the `cocoapods` section of your `build.gradle(.kts)` file:
 
@@ -372,22 +372,22 @@ cocoapods {
 
 This parameter will not appear in the Podspec file. When Xcode runs the Gradle build process, the Kotlin CocoaPods Gradle plugin will select the necessary native build type.
 
-> There’s no need to declare the `Debug` and `Release` configurations because they are supported by default.
+> There's no need to declare the `Debug` and `Release` configurations because they are supported by default.
 >
-{type="note"}
+{style="note"}
 
 ### Experimental interoperability with Swift 5.5 async/await
 
 > Concurrency interoperability with Swift async/await is [Experimental](components-stability.md). It may be dropped or changed at any time.
 > You should use it only for evaluation purposes. We would appreciate your feedback on it in [YouTrack](https://youtrack.jetbrains.com/issue/KT-47610).
 >
-{type="warning"}
+{style="warning"}
 
-We added [support for calling Kotlin’s suspending functions from Objective-C and Swift in 1.4.0](whatsnew14.md#support-for-kotlin-s-suspending-functions-in-swift-and-objective-c), and now we’re improving it to keep up with a new Swift 5.5 feature – [concurrency with `async` and `await` modifiers](https://github.com/apple/swift-evolution/blob/main/proposals/0296-async-await.md).
+We added [support for calling Kotlin's suspending functions from Objective-C and Swift in 1.4.0](whatsnew14.md#support-for-kotlin-s-suspending-functions-in-swift-and-objective-c), and now we're improving it to keep up with a new Swift 5.5 feature – [concurrency with `async` and `await` modifiers](https://github.com/apple/swift-evolution/blob/main/proposals/0296-async-await.md).
 
 The Kotlin/Native compiler now emits the `_Nullable_result` attribute in the generated Objective-C headers for suspending functions with nullable return types. This makes it possible to call them from Swift as `async` functions with the proper nullability.
 
-Note that this feature is experimental and can be affected in the future by changes in both Kotlin and Swift. For now, we’re offering a preview of this feature that has certain limitations, and we are eager to hear what you think. Learn more about its current state and leave your feedback in [this YouTrack issue](https://youtrack.jetbrains.com/issue/KT-47610).
+Note that this feature is experimental and can be affected in the future by changes in both Kotlin and Swift. For now, we're offering a preview of this feature that has certain limitations, and we are eager to hear what you think. Learn more about its current state and leave your feedback in [this YouTrack issue](https://youtrack.jetbrains.com/issue/KT-47610).
 
 ### Improved Swift/Objective-C mapping for objects and companion objects
 
@@ -420,7 +420,7 @@ Learn more about [Swift/Objective-C interoperability](native-objc-interop.md).
 
 [LLD](https://lld.llvm.org/) is a linker from the LLVM project, which we plan to start using in Kotlin/Native for MinGW targets because of its benefits over the default ld.bfd – primarily its better performance.
 
-However, the latest stable version of LLD doesn’t support direct linkage against DLL for MinGW (Windows) targets. Such linkage requires using [import libraries](https://stackoverflow.com/questions/3573475/how-does-the-import-library-work-details/3573527#3573527). Although they aren’t needed with Kotlin/Native 1.5.30, we’re adding a warning to inform you that such usage is incompatible with LLD that will become the default linker for MinGW in the future.
+However, the latest stable version of LLD doesn't support direct linkage against DLL for MinGW (Windows) targets. Such linkage requires using [import libraries](https://stackoverflow.com/questions/3573475/how-does-the-import-library-work-details/3573527#3573527). Although they aren't needed with Kotlin/Native 1.5.30, we're adding a warning to inform you that such usage is incompatible with LLD that will become the default linker for MinGW in the future.
 
 Please share your thoughts and concerns about the transition to the LLD linker in [this YouTrack issue](https://youtrack.jetbrains.com/issue/KT-47605).
 
@@ -431,11 +431,11 @@ Please share your thoughts and concerns about the transition to the LLD linker i
 * [Support for XCFrameworks](#support-for-xcframeworks)
 * [New default publishing setup for Android artifacts](#new-default-publishing-setup-for-android-artifacts)
 
-### Ability to use custom `cinterop` libraries in shared native code
+### Ability to use custom cinterop libraries in shared native code
 
-Kotlin Multiplatform gives you an [option](multiplatform-share-on-platforms.md#use-native-libraries-in-the-hierarchical-structure) to use platform-dependent interop libraries in shared source sets. Before 1.5.30, this worked only with [platform libraries](native-platform-libs.md) shipped with Kotlin/Native distribution. Starting from 1.5.30, you can use it with your custom `cinterop` libraries. To enable this feature, add the `kotlin.mpp.enableCInteropCommonization=true` property in your `gradle.properties`:
+Kotlin Multiplatform gives you an [option](multiplatform-share-on-platforms.md#connect-platform-specific-libraries) to use platform-dependent interop libraries in shared source sets. Before 1.5.30, this worked only with [platform libraries](native-platform-libs.md) shipped with Kotlin/Native distribution. Starting from 1.5.30, you can use it with your custom `cinterop` libraries. To enable this feature, add the `kotlin.mpp.enableCInteropCommonization=true` property in your `gradle.properties`:
 
-```properties
+```none
 kotlin.mpp.enableGranularSourceSetsMetadata=true
 kotlin.native.enableDependencyPropagation=false
 kotlin.mpp.enableCInteropCommonization=true
@@ -559,9 +559,9 @@ Learn how to [debug Kotlin/JS in the browser or IntelliJ IDEA Ultimate](js-debug
 
 ## Gradle
 
-As a part of our mission to [improve the Kotlin Gradle plugin user experience](https://youtrack.jetbrains.com/issue/KT-45778), we’ve implemented the following features:
+As a part of our mission to [improve the Kotlin Gradle plugin user experience](https://youtrack.jetbrains.com/issue/KT-45778), we've implemented the following features:
 * [Support for Java toolchains](#support-for-java-toolchains), which includes an [ability to specify a JDK home with the `UsesKotlinJavaToolchain` interface for older Gradle versions](#ability-to-specify-jdk-home-with-useskotlinjavatoolchain-interface)
-* [An easier way to explicitly specify the Kotlin daemon’s JVM arguments](#easier-way-to-explicitly-specify-kotlin-daemon-jvm-arguments)
+* [An easier way to explicitly specify the Kotlin daemon's JVM arguments](#easier-way-to-explicitly-specify-kotlin-daemon-jvm-arguments)
 
 ### Support for Java toolchains
 
@@ -570,19 +570,19 @@ Using this feature, you can:
 * Run compilations, tests, and executables using JDKs and JREs that are different from the Gradle ones.
 * Compile and test code with an unreleased language version.
 
-With toolchains support, Gradle can autodetect local JDKs and install missing JDKs that Gradle requires for the build. Now Gradle itself can run on any JDK and still reuse the [build cache feature](gradle.md#gradle-build-cache-support).
+With toolchains support, Gradle can autodetect local JDKs and install missing JDKs that Gradle requires for the build. Now Gradle itself can run on any JDK and still reuse the [build cache feature](gradle-compilation-and-caches.md#gradle-build-cache-support).
 
 The Kotlin Gradle plugin supports Java toolchains for Kotlin/JVM compilation tasks.
 A Java toolchain:
-* Sets the [`jdkHome` option](gradle.md#attributes-specific-to-jvm) available for JVM targets.
+* Sets the [`jdkHome` option](gradle-compiler-options.md#attributes-specific-to-jvm) available for JVM targets.
   > [The ability to set the `jdkHome` option directly has been deprecated](https://youtrack.jetbrains.com/issue/KT-46541).
   >
-  {type="warning"}
+  {style="warning"}
 
-* Sets the [`kotlinOptions.jvmTarget`](gradle.md#attributes-specific-to-jvm) to the toolchain's JDK version if the user didn’t set the `jvmTarget` option explicitly.
-  If the toolchain is not configured, the `jvmTarget` field uses the default value. Learn more about [JVM target compatibility](gradle.md#check-for-jvm-target-compatibility-of-related-compile-tasks).
+* Sets the [`kotlinOptions.jvmTarget`](gradle-compiler-options.md#attributes-specific-to-jvm) to the toolchain's JDK version if the user didn't set the `jvmTarget` option explicitly.
+  If the toolchain is not configured, the `jvmTarget` field uses the default value. Learn more about [JVM target compatibility](gradle-configure-project.md#check-for-jvm-target-compatibility-of-related-compile-tasks).
 
-* Affects which JDK [`kapt` workers](kapt.md#running-kapt-tasks-in-parallel) are running on.
+* Affects which JDK [`kapt` workers](kapt.md#run-kapt-tasks-in-parallel) are running on.
 
 Use the following code to set a toolchain. Replace the placeholder `<MAJOR_JDK_VERSION>` with the JDK version you would like to use:
 
@@ -592,7 +592,7 @@ Use the following code to set a toolchain. Replace the placeholder `<MAJOR_JDK_V
 ```kotlin
 kotlin {
     jvmToolchain {
-        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(<MAJOR_JDK_VERSION>)) // “8”
+        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(<MAJOR_JDK_VERSION>)) // "8"
     }
 }
 ```
@@ -603,7 +603,7 @@ kotlin {
 ```groovy
 kotlin {
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(<MAJOR_JDK_VERSION>)) // “8”
+        languageVersion.set(JavaLanguageVersion.of(<MAJOR_JDK_VERSION>)) // "8"
     }
 }
 ```
@@ -618,18 +618,18 @@ You can set a toolchain via the `java` extension, and Kotlin compilation tasks w
 ```kotlin
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(<MAJOR_JDK_VERSION>)) // “8”
+        languageVersion.set(JavaLanguageVersion.of(<MAJOR_JDK_VERSION>)) // "8"
     }
 }
 ```
 
-For information about setting any JDK version for `KotlinCompile` tasks, look through the docs about [setting the JDK version with the Task DSL](gradle.md#setting-jdk-version-with-the-task-dsl).
+For information about setting any JDK version for `KotlinCompile` tasks, look through the docs about [setting the JDK version with the Task DSL](gradle-configure-project.md#set-jdk-version-with-the-task-dsl).
 
 For Gradle versions from 6.1 to 6.6, [use the `UsesKotlinJavaToolchain` interface to set the JDK home](#ability-to-specify-jdk-home-with-useskotlinjavatoolchain-interface).
 
 ### Ability to specify JDK home with UsesKotlinJavaToolchain interface
 
-All Kotlin tasks that support setting the JDK via [`kotlinOptions`](gradle.md#compiler-options) now implement the `UsesKotlinJavaToolchain` interface. To set the JDK home, put a path to your JDK and replace the `<JDK_VERSION>` placeholder:
+All Kotlin tasks that support setting the JDK via [`kotlinOptions`](gradle-compiler-options.md) now implement the `UsesKotlinJavaToolchain` interface. To set the JDK home, put a path to your JDK and replace the `<JDK_VERSION>` placeholder:
 
 <tabs group="build-script">
 <tab title="Kotlin" group-key="kotlin">
@@ -665,27 +665,27 @@ project.tasks
 
 Use the `UsesKotlinJavaToolchain` interface for Gradle versions from 6.1 to 6.6. Starting from Gradle 6.7, use the [Java toolchains](#support-for-java-toolchains) instead.
 
-When using this feature, note that [kapt task workers](kapt.md#running-kapt-tasks-in-parallel) will only use [process isolation mode](https://docs.gradle.org/current/userguide/worker_api.html#changing_the_isolation_mode), and the `kapt.workers.isolation` property will be ignored.
+When using this feature, note that [kapt task workers](kapt.md#run-kapt-tasks-in-parallel) will only use [process isolation mode](https://docs.gradle.org/current/userguide/worker_api.html#changing_the_isolation_mode), and the `kapt.workers.isolation` property will be ignored.
 
 ### Easier way to explicitly specify Kotlin daemon JVM arguments
 
-In Kotlin 1.5.30, there’s a new logic for the Kotlin daemon’s JVM arguments. Each of the options in the following list overrides the ones that came before it:
+In Kotlin 1.5.30, there's a new logic for the Kotlin daemon's JVM arguments. Each of the options in the following list overrides the ones that came before it:
 
 * If nothing is specified, the Kotlin daemon inherits arguments from the Gradle daemon (as before). For example, in the `gradle.properties` file:
 
-    ```properties
+    ```none
     org.gradle.jvmargs=-Xmx1500m -Xms=500m
     ```
 
-* If the Gradle daemon’s JVM arguments have the `kotlin.daemon.jvm.options` system property, use it as before:
+* If the Gradle daemon's JVM arguments have the `kotlin.daemon.jvm.options` system property, use it as before:
 
-    ```properties
+    ```none
     org.gradle.jvmargs=-Dkotlin.daemon.jvm.options=-Xmx1500m -Xms=500m
     ```
 
 * You can add the`kotlin.daemon.jvmargs` property in the `gradle.properties` file:
 
-    ```properties
+    ```none
     kotlin.daemon.jvmargs=-Xmx1500m -Xms=500m
     ```
 
@@ -741,15 +741,15 @@ In Kotlin 1.5.30, there’s a new logic for the Kotlin daemon’s JVM arguments.
     </tab>
     </tabs>
 
-    > In this case a new Kotlin daemon instance can start on task execution. Learn more about [the Kotlin daemon’s interactions with JVM arguments](gradle.md#setting-kotlin-daemon-s-jvm-arguments).
+    > In this case a new Kotlin daemon instance can start on task execution. Learn more about [the Kotlin daemon's interactions with JVM arguments](gradle-compilation-and-caches.md#setting-kotlin-daemon-s-jvm-arguments).
     >
-    {type="note"}
+    {style="note"}
 
-For more information about the Kotlin daemon, see [the Kotlin daemon and using it with Gradle](gradle.md#kotlin-daemon-and-using-it-with-gradle).
+For more information about the Kotlin daemon, see [the Kotlin daemon and using it with Gradle](gradle-compilation-and-caches.md#the-kotlin-daemon-and-how-to-use-it-with-gradle).
 
 ## Standard library
 
-Kotlin 1.5.30 is bringing improvements to the standard library’s `Duration` and `Regex` APIs:
+Kotlin 1.5.30 is bringing improvements to the standard library's `Duration` and `Regex` APIs:
 * [Changing `Duration.toString()` output](#changing-duration-tostring-output)
 * [Parsing Duration from String](#parsing-duration-from-string)
 * [Matching with Regex at a particular position](#matching-with-regex-at-a-particular-position)
@@ -760,11 +760,11 @@ Kotlin 1.5.30 is bringing improvements to the standard library’s `Duration` an
 > The Duration API is [Experimental](components-stability.md). It may be dropped or changed at any time.
 > Use it only for evaluation purposes. We would appreciate hearing your feedback on it in [YouTrack](https://youtrack.jetbrains.com/issues/KT).
 >
-{type="warning"}
+{style="warning"}
 
 Before Kotlin 1.5.30, the [`Duration.toString()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.time/-duration/to-string.html) function would return a string representation of its argument expressed in the unit that yielded the most compact and readable number value.
 From now on, it will return a string value expressed as a combination of numeric components, each in its own unit.
-Each component is a number followed by the unit’s abbreviated name: `d`, `h`, `m`, `s`. For example:
+Each component is a number followed by the unit's abbreviated name: `d`, `h`, `m`, `s`. For example:
 
 |**Example of function call**|**Previous output**|**Current output**|
 | --- | --- | --- |
@@ -784,14 +784,14 @@ If you want to express duration in a single unit, use the overloaded `Duration.t
 
 > We recommend using [`Duration.toIsoString()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.time/-duration/to-iso-string.html) in certain cases, including serialization and interchange. `Duration.toIsoString()` uses the stricter [ISO-8601](https://www.iso.org/iso-8601-date-and-time-format.html) format instead of `Duration.toString()`.
 >
-{type="note"}
+{style="note"}
 
 ### Parsing Duration from String
 
 > The Duration API is [Experimental](components-stability.md). It may be dropped or changed at any time.
 > Use it only for evaluation purposes. We would appreciate hearing your feedback on it in [this issue](https://github.com/Kotlin/KEEP/issues/190).
 >
-{type="warning"}
+{style="warning"}
 
 In Kotlin 1.5.30, there are new functions in the Duration API:
 * [`parse()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.time/-duration/parse.html), which supports parsing the outputs of:
@@ -848,7 +848,7 @@ fun main() {
 > `Regex.matchAt()` and `Regex.matchesAt()` functions are [Experimental](components-stability.md). They may be dropped or changed at any time.
 > Use them only for evaluation purposes. We would appreciate hearing your feedback on them in [YouTrack](https://youtrack.jetbrains.com/issue/KT-34021).
 >
-{type="warning"}
+{style="warning"}
 
 The new `Regex.matchAt()` and `Regex.matchesAt()` functions provide a way to check whether a regex has an exact match at a particular position in a `String` or `CharSequence`.
 
@@ -867,7 +867,7 @@ fun main(){
 ```
 {kotlin-runnable="true" kotlin-min-compiler-version="1.5" validate="false"}
 
-`matchAt()` returns the match if one is found or `null` if one isn’t:
+`matchAt()` returns the match if one is found or `null` if one isn't:
 
 ```kotlin
 fun main(){
@@ -886,7 +886,7 @@ fun main(){
 > `Regex.splitToSequence()` and `CharSequence.splitToSequence(Regex)` functions are [Experimental](components-stability.md). They may be dropped or changed at any time.
 > Use them only for evaluation purposes. We would appreciate hearing your feedback on them in [YouTrack](https://youtrack.jetbrains.com/issue/KT-23351).
 >
-{type="warning"}
+{style="warning"}
 
 The new `Regex.splitToSequence()` function is a lazy counterpart of [`split()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.text/-regex/split.html). It splits the string around matches of the given regex, but it returns the result as a [Sequence](sequences.md) so that all operations on this result are executed lazily.
 

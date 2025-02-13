@@ -1,11 +1,11 @@
-- title: "Kotlin 1.7.0 What's New Video"
-  link: https://www.youtube.com/watch?v=54WEfLKtCGk
+- title: "KotlinConf 2024 Tickets Are Now Available!"
+  link: https://blog.jetbrains.com/kotlin/2023/07/kotlinconf-2024/
 
-- title: "Kotlin Multiplatform User Survey Q2 2022 Is Open"
-  link: https://blog.jetbrains.com/kotlin/2022/06/multiplatform-survey-q3-q4-2021/
+- title: "Updated Kotlin roadmap for 2023"
+  link: https://kotlinlang.org/docs/roadmap.html
 
-- title: "Kotlin Roadmap Update, June 2022"
-  link: https://blog.jetbrains.com/kotlin/2022/06/what-to-expect-from-the-kotlin-team-in-202223/
+- title: "Kotlin Multiplatform Mobile Content Creators"
+  link: https://blog.jetbrains.com/kotlin/2022/12/shout-out-to-kotlin-multiplatform-mobile-content-creators/
 
-- title: "Kotlin Multiplatform Mobile Beta Roadmap Update"
-  link: https://blog.jetbrains.com/kotlin/2022/05/kotlin-multiplatform-mobile-beta-roadmap-update/
+- title: "Reproducible Kotlin Compiler Artifacts"
+  link: https://blog.jetbrains.com/kotlin/2023/02/reproducible-kotlin-compiler-artifacts/

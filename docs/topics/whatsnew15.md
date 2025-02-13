@@ -1,6 +1,6 @@
 [//]: # (title: What's new in Kotlin 1.5.0)
 
-_[Release date: 5 May 2021](releases.md#release-details)_
+_[Released: 5 May 2021](releases.md#release-details)_
 
 Kotlin 1.5.0 introduces new language features, stable IR-based JVM compiler backend, performance improvements,
 and evolutionary changes such as stabilizing experimental features and deprecating outdated ones.
@@ -19,10 +19,10 @@ and the corresponding pages of Kotlin documentation.
 
 ### JVM records support
 
-Java is evolving fast, and to make sure Kotlin remains interoperable with it, we’ve introduced support for one of its latest
+Java is evolving fast, and to make sure Kotlin remains interoperable with it, we've introduced support for one of its latest
 features – [record classes](https://openjdk.java.net/jeps/395).
 
-Kotlin’s support for JVM records includes bidirectional interoperability:
+Kotlin's support for JVM records includes bidirectional interoperability:
 * In Kotlin code, you can use Java record classes like you would use typical classes with properties.
 * To use a Kotlin class as a record in Java code, make it a `data` class and mark it with the `@JvmRecord` annotation.
 
@@ -33,7 +33,7 @@ data class User(val name: String, val age: Int)
 
 [Learn more about using JVM records in Kotlin](jvm-records.md).
 
-<video href="iyEWXyuuseU" title="Support for JVM Records in Kotlin 1.5.0"/>
+<video src="https://www.youtube.com/v/iyEWXyuuseU" title="Support for JVM Records in Kotlin 1.5.0"/>
 
 ### Sealed interfaces
 
@@ -49,7 +49,7 @@ You can rely on that fact, for example, to write exhaustive `when` expressions.
 ```kotlin
 fun draw(polygon: Polygon) = when (polygon) {
    is Rectangle -> // ...
-   is Triangle -> // …
+   is Triangle -> // ...
    // else is not needed - all possible implementations are covered
 }
 
@@ -64,7 +64,7 @@ class FilledRectangle: Polygon, Fillable
 
 [Learn more about sealed interfaces](sealed-classes.md).
 
-<video href="d_Mor21W_60" title="Sealed Interfaces and Sealed Classes Improvements"/>
+<video src="https://www.youtube.com/v/d_Mor21W_60" title="Sealed Interfaces and Sealed Classes Improvements"/>
 
 ### Package-wide sealed class hierarchies
 
@@ -75,7 +75,7 @@ Direct subclasses may be top-level or nested inside any number of other named cl
 
 The subclasses of a sealed class must have a name that is properly qualified – they cannot be local or anonymous objects.
 
-[Learn more about sealed class hierarchies](sealed-classes.md#location-of-direct-subclasses).
+[Learn more about sealed class hierarchies](sealed-classes.md#inheritance).
 
 ### Inline classes
 
@@ -100,7 +100,7 @@ The `inline` modifier is now deprecated with a warning.
 
 [Learn more about inline classes](inline-classes.md).
 
-<video href="LpqvtgibbsQ" title="From Inline to Value Classes"/>
+<video src="https://www.youtube.com/v/LpqvtgibbsQ" title="From Inline to Value Classes"/>
 
 ## Kotlin/JVM
 
@@ -123,7 +123,7 @@ now become the default for language version `1.5`. The old backend is still used
 
 You can find more details about the benefits of the IR backend and its future development in [this blog post](https://blog.jetbrains.com/kotlin/2021/02/the-jvm-backend-is-in-beta-let-s-make-it-stable-together/).
 
-If you need to use the old backend in Kotlin 1.5.0, you can add the following lines to the project’s configuration file:
+If you need to use the old backend in Kotlin 1.5.0, you can add the following lines to the project's configuration file:
 
 * In Gradle:
 
@@ -164,7 +164,7 @@ The default target version for Kotlin/JVM compilations is now `1.8`. The `1.6` t
 
 If you need a build for JVM 1.6, you can still switch to this target. Learn how:
 
-* [in Gradle](gradle.md#attributes-specific-to-jvm)
+* [in Gradle](gradle-compiler-options.md#attributes-specific-to-jvm)
 * [in Maven](maven.md#attributes-specific-to-jvm)
 * [in the command-line compiler](compiler-reference.md#jvm-target-version)
 
@@ -175,19 +175,19 @@ Kotlin 1.5.0 now uses dynamic invocations (`invokedynamic`) for compiling SAM (S
 * Over lambda if the SAM type is a [Kotlin functional interface](fun-interfaces.md#sam-conversions)
 
 The new implementation uses [`LambdaMetafactory.metafactory()`](https://docs.oracle.com/javase/8/docs/api/java/lang/invoke/LambdaMetafactory.html#metafactory-java.lang.invoke.MethodHandles.Lookup-java.lang.String-java.lang.invoke.MethodType-java.lang.invoke.MethodType-java.lang.invoke.MethodHandle-java.lang.invoke.MethodType-)
-and auxiliary wrapper classes are no longer generated during compilation. This decreases the size of the application’s JAR,
+and auxiliary wrapper classes are no longer generated during compilation. This decreases the size of the application's JAR,
 which improves the JVM startup performance.
 
 To roll back to the old implementation scheme based on anonymous class generation, add the compiler option `-Xsam-conversions=class`.
 
-Learn how to add compiler options in [Gradle](gradle.md#compiler-options), [Maven](maven.md#specifying-compiler-options), and the [command-line compiler](compiler-reference.md#compiler-options).
+Learn how to add compiler options in [Gradle](gradle-compiler-options.md), [Maven](maven.md#specify-compiler-options), and the [command-line compiler](compiler-reference.md#compiler-options).
 
 ### Lambdas via invokedynamic
 
 > Compiling plain Kotlin lambdas into invokedynamic is [Experimental](components-stability.md). It may be dropped or changed at any time.
 > Opt-in is required (see details below), and you should use it only for evaluation purposes. We would appreciate hearing your feedback on it in [YouTrack](https://youtrack.jetbrains.com/issue/KT-45375).
 >
-{type="warning"}
+{style="warning"}
 
 Kotlin 1.5.0 is introducing experimental support for compiling plain Kotlin lambdas (which are not converted to an instance
 of a functional interface) into dynamic invocations (`invokedynamic`). The implementation produces lighter binaries by using
@@ -199,10 +199,10 @@ lambda compilation:
 * Calling `toString()` on such a lambda produces a less readable string representation.
 * Experimental [`reflect`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect.jvm/reflect.html) API does not support lambdas created with `LambdaMetafactory`.
 
-To try this feature, add the `-Xlambdas=indy` compiler option. We’d be grateful if you could share your feedback on it using
+To try this feature, add the `-Xlambdas=indy` compiler option. We would be grateful if you could share your feedback on it using
 this [YouTrack ticket](https://youtrack.jetbrains.com/issue/KT-45375).
 
-Learn how to add compiler options in [Gradle](gradle.md#compiler-options), [Maven](maven.md#specifying-compiler-options), and [command-line compiler](compiler-reference.md#compiler-options).
+Learn how to add compiler options in [Gradle](gradle-compiler-options.md), [Maven](maven.md#specify-compiler-options), and [command-line compiler](compiler-reference.md#compiler-options).
 
 ### Deprecation of @JvmDefault and old Xjvm-default modes
 
@@ -251,7 +251,7 @@ In 1.5.0, Kotlin/Native is receiving a set of performance improvements that spee
 debug mode for `linuxX64` (only on Linux hosts) and `iosArm64` targets. With compiler caches enabled, most debug compilations
 complete much faster, except for the first one. Measurements showed about a 200% speed increase on our test projects.
 
-To use compiler caches for new targets, opt in by adding the following lines to the project’s `gradle.properties`:
+To use compiler caches for new targets, opt in by adding the following lines to the project's `gradle.properties`:
 * For `linuxX64` : `kotlin.native.cacheKind.linuxX64=static`
 * For `iosArm64`: `kotlin.native.cacheKind.iosArm64=static`
 
@@ -266,7 +266,7 @@ Other improvements speed up the execution of Kotlin/Native code:
 The built-in Kotlin/Native memory leak checker has been disabled by default.
 
 It was initially designed for internal use, and it is able to find leaks only in a limited number of cases, not all of them.
-Moreover, it later turned out to have issues that can cause application crashes. So we’ve decided to turn off the memory leak checker.
+Moreover, it later turned out to have issues that can cause application crashes. So we've decided to turn off the memory leak checker.
 
 The memory leak checker can still be useful for certain cases, for example, unit testing. For these cases, you can enable
 it by adding the following line of code:
@@ -279,7 +279,7 @@ Note that enabling the checker for the application runtime is not recommended.
 
 ## Kotlin/JS
 
-Kotlin/JS is receiving evolutionary changes in 1.5.0. We’re continuing our work on moving the [JS IR compiler backend](js-ir-compiler.md)
+Kotlin/JS is receiving evolutionary changes in 1.5.0. We're continuing our work on moving the [JS IR compiler backend](js-ir-compiler.md)
 towards stable and shipping other updates:
 
 * [Upgrade of webpack to version 5](#upgrade-to-webpack-5)
@@ -288,7 +288,7 @@ towards stable and shipping other updates:
 ### Upgrade to webpack 5
 
 The Kotlin/JS Gradle plugin now uses webpack 5 for browser targets instead of webpack 4. This is a major webpack upgrade
-that brings incompatible changes. If you’re using a custom webpack configuration, be sure to check the [webpack 5 release notes](https://webpack.js.org/blog/2020-10-10-webpack-5-release/).
+that brings incompatible changes. If you're using a custom webpack configuration, be sure to check the [webpack 5 release notes](https://webpack.js.org/blog/2020-10-10-webpack-5-release/).
 
 [Learn more about bundling Kotlin/JS projects with webpack](js-project-setup.md#webpack-bundling).
 
@@ -297,17 +297,17 @@ that brings incompatible changes. If you’re using a custom webpack configurati
 > The Kotlin/JS IR compiler is in [Alpha](components-stability.md). It may change incompatibly and require manual migration
 >in the future. We would appreciate your feedback on it in [YouTrack](https://youtrack.jetbrains.com/issues/KT).
 >
-{type="warning"}
+{style="warning"}
 
 Along with working on the IR-based backend for Kotlin/JS compiler, we encourage and help library authors to build their
 projects in `both` mode. This means they are able to produce artifacts for both Kotlin/JS compilers, therefore growing
 the ecosystem for the new compiler.
 
 Many well-known frameworks and libraries are already available for the IR backend: [KVision](https://kvision.io/), [fritz2](https://www.fritz2.dev/),
-[doodle](https://github.com/nacular/doodle), and others. If you’re using them in your project, you can already build it
+[doodle](https://github.com/nacular/doodle), and others. If you're using them in your project, you can already build it
 with the IR backend and see the benefits it brings.
 
-If you’re writing your own library, [compile it in the 'both' mode](js-ir-compiler.md#authoring-libraries-for-the-ir-compiler-with-backwards-compatibility)
+If you're writing your own library, [compile it in the 'both' mode](js-ir-compiler.md#authoring-libraries-for-the-ir-compiler-with-backwards-compatibility)
 so that your clients can also use it with the new compiler.
 
 
@@ -334,14 +334,14 @@ The standard library has received a range of changes and improvements, from stab
 
 You can learn more about the standard library changes in [this blog post](https://blog.jetbrains.com/kotlin/2021/04/kotlin-1-5-0-rc-released).
 
-<video href="MyTkiT2I6-8" title="New Standard Library Features"/>
+<video src="https://www.youtube.com/v/MyTkiT2I6-8" title="New Standard Library Features"/>
 
 ### Stable unsigned integer types
 
 The `UInt`, `ULong`, `UByte`, `UShort` unsigned integer types are now [Stable](components-stability.md). The same goes
 for operations on these types, ranges, and progressions of them. Unsigned arrays and operations on them remain in Beta.
 
-[Learn more about unsigned integer types](basic-types.md#unsigned-integers).
+[Learn more about unsigned integer types](unsigned-integer-types.md).
 
 ### Stable locale-agnostic API for upper/lowercasing text
 
@@ -371,7 +371,7 @@ Kotlin 1.5.0 provides the following fully [Stable](components-stability.md) alte
 > For Kotlin/JVM, there are also overloaded `uppercase()`, `lowercase()`, and `titlecase()` functions with an explicit
 > `Locale` parameter.
 >
-{type="note"}
+{style="note"}
 
 The old API functions are marked as deprecated and will be removed in a future release.
 
@@ -434,11 +434,11 @@ New operations for modular arithmetics have been added to the standard library:
 * `floorDiv()` returns the result of [floored division](https://en.wikipedia.org/wiki/Floor_and_ceiling_functions). It is available for integer types.
 * `mod()` returns the remainder of floored division (_modulus_). It is available for all numeric types.
 
-These operations look quite similar to the existing [division of integers](basic-types.md#operations) and [rem()](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/rem.html)
+These operations look quite similar to the existing [division of integers](numbers.md#operations-on-numbers) and [rem()](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/rem.html)
 function (or the `%`operator), but they work differently on negative numbers:
 * `a.floorDiv(b)` differs from a regular `/` in that `floorDiv` rounds the result down (towards the lesser integer),
   whereas `/` truncates the result to the integer closer to 0.
-* `a.mod(b)` is the difference between `a` and `a.floorDiv(b) * b`. It’s either zero or has the same sign as `b`,
+* `a.mod(b)` is the difference between `a` and `a.floorDiv(b) * b`. It's either zero or has the same sign as `b`,
   while `a % b` can have a different one.
 
 ```kotlin
@@ -459,7 +459,7 @@ fun main() {
 > The Duration API is [Experimental](components-stability.md). It may be dropped or changed at any time.
 > Use it only for evaluation purposes. We would appreciate hearing your feedback on it in [YouTrack](https://youtrack.jetbrains.com/issues/KT).
 >
-{type="warning"}
+{style="warning"}
 
 There is an experimental [Duration](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.time/-duration/) class for representing
 duration amounts in different time units. In 1.5.0, the Duration API has received the following changes:
@@ -483,11 +483,11 @@ fun main() {
 //sampleEnd
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.5"}
+{validate="false"}
 
 ### New API for getting a char category now available in multiplatform code
 
-Kotlin 1.5.0 introduces the new API for getting a character’s category according to Unicode in multiplatform projects.
+Kotlin 1.5.0 introduces the new API for getting a character's category according to Unicode in multiplatform projects.
 Several functions are now available in all the platforms and in the common code.
 
 Functions for checking whether a char is a letter or a digit:
@@ -532,7 +532,7 @@ The property [`Char.category`](https://kotlinlang.org/api/latest/jvm/stdlib/kotl
 enum class [`CharCategory`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.text/-char-category/), which indicates
 a char's general category according to Unicode, are now also available in multiplatform projects.
 
-[Learn more about characters](basic-types.md#characters).
+[Learn more about characters](characters.md).
 
 ### New collections function firstNotNullOf()
 
@@ -589,7 +589,7 @@ Additionally, you can use the `kotlin-test` dependency in any shared or platform
 
 An existing kotlin-test setup with explicit dependencies will continue to work both in Gradle and in Maven.
 
-Learn more about [setting dependencies on test libraries](gradle.md#set-dependencies-on-test-libraries).
+Learn more about [setting dependencies on test libraries](gradle-configure-project.md#set-dependencies-on-test-libraries).
 
 ### Automatic selection of a testing framework for Kotlin/JVM source sets
 
@@ -634,7 +634,7 @@ kotlin {
 </tab>
 </tabs>
 
-You can choose JUnit 5 or TestNG by calling [`useJUnitPlatform()`]( https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/testing/Test.html#useJUnitPlatform)
+You can choose JUnit 5 or TestNG by calling [`useJUnitPlatform()`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/testing/Test.html#useJUnitPlatform)
 or [`useTestNG()`](https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/testing/Test.html#useTestNG) in the test task:
 
 ```groovy
@@ -650,9 +650,9 @@ tasks {
 ```
 
 You can disable automatic testing framework selection by adding the line `kotlin.test.infer.jvm.variant=false`
-to the project’s `gradle.properties`.
+to the project's `gradle.properties`.
 
-Learn more about [setting dependencies on test libraries](gradle.md#set-dependencies-on-test-libraries).
+Learn more about [setting dependencies on test libraries](gradle-configure-project.md#set-dependencies-on-test-libraries).
 
 ###  Assertion function updates
 
@@ -678,7 +678,7 @@ The `kotlin-test` library now has the following features:
 
 * **Comparing the container content for arrays, sequences, and arbitrary iterables**
 
-  There is a new set of overloaded `assertContentEquals()` functions for comparing content for different collections that don’t implement [structural equality](equality.md#structural-equality):
+  There is a new set of overloaded `assertContentEquals()` functions for comparing content for different collections that don't implement [structural equality](equality.md#structural-equality):
 
   ```kotlin
   @Test
@@ -754,7 +754,7 @@ are disabled and the `-Xcoroutines=experimental` flag is no longer supported.
 Learn more in the [changelog](https://github.com/Kotlin/kotlinx.coroutines/releases/tag/1.5.0-RC) and the
 [`kotlinx.coroutines` 1.5.0 release blog post](https://blog.jetbrains.com/kotlin/2021/05/kotlin-coroutines-1-5-0-released/).
 
-<video href="EVLnWOcR0is" title="kotlinx.coroutines 1.5.0"/>
+<video src="https://www.youtube.com/v/EVLnWOcR0is" title="kotlinx.coroutines 1.5.0"/>
 
 ### Serialization 1.2.1
 
@@ -767,7 +767,7 @@ Learn more in the [changelog](https://github.com/Kotlin/kotlinx.coroutines/relea
 Learn more in the [changelog](https://github.com/Kotlin/kotlinx.serialization/releases/tag/v1.2.1) and the
 [`kotlinx.serialization` 1.2.1 release blog post](https://blog.jetbrains.com/kotlin/2021/05/kotlinx-serialization-1-2-released/).
 
-<video href="698I_AH8h6s" title="kotlinx.serialization 1.2.1"/>
+<video src="https://www.youtube.com/v/698I_AH8h6s" title="kotlinx.serialization 1.2.1"/>
 
 ### dateTime 0.2.0
 
@@ -784,12 +784,12 @@ Learn more in the [changelog](https://github.com/Kotlin/kotlinx-datetime/release
 IntelliJ IDEA and Android Studio will suggest updating the Kotlin plugin to 1.5.0 once it is available.
 
 To migrate existing projects to Kotlin 1.5.0, just change the Kotlin version to `1.5.0` and re-import your Gradle or Maven
-project. [Learn how to update to Kotlin 1.5.0](releases.md#update-to-a-new-release).
+project. [Learn how to update to Kotlin 1.5.0](releases.md#update-to-a-new-kotlin-version).
 
-To start a new project with Kotlin 1.5.0, update the Kotlin plugin and run the Project Wizard from **File** \| **New** \|
+To start a new project with Kotlin 1.5.0, update the Kotlin plugin and run the Project Wizard from **File** | **New** |
 **Project**.
 
 The new command-line compiler is available for downloading on the [GitHub release page](https://github.com/JetBrains/kotlin/releases/tag/v1.5.0).
 
-Kotlin 1.5.0 is a [feature release](kotlin-evolution.md#feature-releases-and-incremental-releases) and therefore can
+Kotlin 1.5.0 is a [feature release](kotlin-evolution-principles.md#language-and-tooling-releases) and therefore can
 bring incompatible changes to the language. Find the detailed list of such changes in the [Compatibility Guide for Kotlin 1.5](compatibility-guide-15.md).

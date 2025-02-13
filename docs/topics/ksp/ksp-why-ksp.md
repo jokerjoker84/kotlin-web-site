@@ -21,11 +21,11 @@ times by up to 25% when compared to kapt.
 KSP is itself implemented as a compiler plugin. There are prebuilt packages on Google's Maven repository that you can
 download and use without having to build the project yourself.
 
-## Comparison to `kotlinc` compiler plugins
+## Comparison to kotlinc compiler plugins
 
 `kotlinc` compiler plugins have access to almost everything from the compiler and therefore have maximum power and flexibility.
 On the other hand, because these plugins can potentially depend on anything in the compiler, they are sensitive to
-compiler changes and need to be maintained frequently. These plugins also require a deep understanding of `kotlinc`’s
+compiler changes and need to be maintained frequently. These plugins also require a deep understanding of `kotlinc`'s
 implementation, so the learning curve can be steep.
 
 KSP aims to hide most compiler changes through a well-defined API, though major changes in compiler or even the Kotlin
@@ -36,7 +36,7 @@ subset of a general `kotlinc` plugin. For example, while `kotlinc` can examine e
 modify code, KSP cannot.
 
 While writing a `kotlinc` plugin can be a lot of fun, it can also take a lot of time. If you aren't in a position to
-learn `kotlinc`’s implementation and do not need to modify source code or read expressions, KSP might be a good fit.
+learn `kotlinc`'s implementation and do not need to modify source code or read expressions, KSP might be a good fit.
 
 ## Comparison to reflection
 
@@ -58,7 +58,7 @@ is fairly quick. Almost all of the build overhead resides in the stub generation
 reduce the time spent in the compiler by 25%.
 
 For performance evaluation, we implemented a [simplified version](https://github.com/google/ksp/releases/download/1.4.10-dev-experimental-20200924/miniGlide.zip)
-of [Glide](https://github.com/bumptech/glide) in KSP to make it generate code for the [Tachiyomi](https://github.com/inorichi/tachiyomi) project.
+of [Glide](https://github.com/bumptech/glide) in KSP to make it generate code for the [Tachiyomi](https://github.com/tachiyomiorg) project.
 While the total Kotlin compilation time of the project is 21.55 seconds on our test device, it took 8.67 seconds for kapt
 to generate the code, and it took 1.15 seconds for our KSP implementation to generate the code.
 
@@ -74,7 +74,3 @@ The following are not goals of KSP:
 * Examining expression-level information of source code.
 * Modifying source code.
 * 100% compatibility with the Java Annotation Processing API.
-
-We are also exploring several additional features. These features are currently unavailable:
-
-* IDE integration: Currently IDEs know nothing about the generated code.
