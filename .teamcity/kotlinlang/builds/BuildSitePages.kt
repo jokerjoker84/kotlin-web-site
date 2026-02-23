@@ -56,8 +56,7 @@ object BuildSitePages : BuildType({
                 
                 mkdir -p dist/
                 
-                echo "Copy python ages artifacts to dist"
-                #cp -fR build/* dist/
+                echo "Copy assets folder to dist"
                 mkdir -p dist/assets/
                 cp -fR assets/* dist/assets/
                 
@@ -72,7 +71,6 @@ object BuildSitePages : BuildType({
                 mkdir -p dist/docs/multiplatform
                 cp -fR _webhelp/reference/* dist/docs/
                 cp -fR _webhelp/multiplatform/* dist/docs/multiplatform/
-                cp dist/assets/kotlin-reference.pdf dist/docs/kotlin-reference.pdf
                 cp dist/assets/kotlin-reference.pdf dist/docs/kotlin-docs.pdf
                 
                 echo "Copy nextjs artifacts to dist"
