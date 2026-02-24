@@ -16,6 +16,7 @@ services:
     environment:
       BASE_URL: "http://reverse-proxy"
       WEBTEAM_UI_NPM_TOKEN: ${WEBTEAM_UI_NPM_TOKEN}
+      CI: ${CI}
     working_dir: /var/www
     volumes:
       - .:/var/www
