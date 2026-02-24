@@ -2,8 +2,9 @@ package tests.buildTypes
 
 import common.E2ERunner
 import common.extensions.isProjectPlayground
-import common.stepE2ETest
 import jetbrains.buildServer.configs.kotlin.buildFeatures.notifications
+import jetbrains.buildServer.configs.kotlin.buildSteps.ScriptBuildStep
+import jetbrains.buildServer.configs.kotlin.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.triggers.schedule
 
 
@@ -32,7 +33,16 @@ object E2EProductionTest : E2ERunner({
     }
 
     steps {
-        step(stepE2ETest())
+        script {
+            name = "Run E2E tests"
+            // language=sh
+            scriptContent = """
+                yarn install --immutable
+                yarn test:ci
+            """.trimIndent()
+            dockerImage = "mcr.microsoft.com/playwright:v1.57.0"
+            dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
+        }
     }
 
     features {

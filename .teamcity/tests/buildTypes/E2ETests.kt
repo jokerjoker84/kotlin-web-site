@@ -1,8 +1,8 @@
 package tests.buildTypes
 
 import common.E2ERunner
-import common.stepE2ETest
 import jetbrains.buildServer.configs.kotlin.FailureAction
+import jetbrains.buildServer.configs.kotlin.buildSteps.script
 import kotlinlang.builds.BuildSitePages
 
 object E2ETests : E2ERunner({
@@ -26,6 +26,9 @@ object E2ETests : E2ERunner({
     }
 
     steps {
-        step(stepE2ETest("./scripts/run-e2e-tests.sh"))
+        script {
+            name = "Run E2E tests"
+            scriptContent = "./scripts/run-e2e-tests.sh"
+        }
     }
 })

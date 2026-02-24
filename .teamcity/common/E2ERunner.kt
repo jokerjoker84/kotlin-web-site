@@ -20,18 +20,3 @@ open class E2ERunner(init: BuildType.() -> Unit) : BuildType({
 
     init()
 })
-
-// language=sh
-val DEFAULT_STEP_E2E_TEST = """
-    yarn install --immutable
-    yarn test:ci
-""".trimIndent()
-
-fun stepE2ETest(content: String = DEFAULT_STEP_E2E_TEST): BuildStep {
-    return ScriptBuildStep {
-        name = "Run E2E tests"
-        scriptContent = content
-        dockerImage = "mcr.microsoft.com/playwright:v1.57.0"
-        dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
-    }
-}
