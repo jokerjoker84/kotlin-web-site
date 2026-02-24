@@ -11,6 +11,7 @@ open class E2ERunner(init: BuildType.() -> Unit) : BuildType({
 
     params {
         param("env.WEBTEAM_UI_NPM_TOKEN", "%WEBTEAM_UI_NPM_TOKEN%")
+        param("env.CI", "true")
     }
 
     vcs {
