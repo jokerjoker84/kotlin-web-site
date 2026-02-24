@@ -58,6 +58,12 @@
     position:
       lat: 44.4267674
       lng: 26.1025384
+  - name: Kobudei
+    country: Romania
+    url: https://kobudei.org
+    position:
+      lat: 44.4326937
+      lng: 26.1040444
   - name: Budapest KUG
     country: Hungary
     url: https://www.meetup.com/kotlin-budapest/
