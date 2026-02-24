@@ -26,6 +26,6 @@ object E2ETests : E2ERunner({
     }
 
     steps {
-        step(stepE2ETest("./scripts/test/run-e2e-tests.sh"))
+        step(stepE2ETest("./scripts/run-e2e-tests.sh"))
     }
 })
